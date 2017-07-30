@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/msales/ren"
-	"github.com/msales/ren/server"
-	"github.com/msales/ren/server/middleware"
+	"github.com/nrwiersma/ren"
+	"github.com/nrwiersma/ren/server"
+	"github.com/nrwiersma/ren/server/middleware"
 	"gopkg.in/urfave/cli.v1"
 )
 

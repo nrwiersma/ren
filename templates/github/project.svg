@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300" viewBox="0 0 880 300">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="oddeven">
+        <g id="gh_title">
+            <g transform="translate(360, 157)">
+                <text font-family="Helvetica Nue,Helvetica,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5" text-anchor="end">
+                    {{if eq .lang "go"}}
+                    <tspan fill="#00c3ff">GO</tspan>
+                    {{else if eq .lang "php"}}
+                    <tspan fill="#8d44ad">PHP</tspan>
+                    {{else if eq .lang "cpp"}}
+                    <tspan fill="#f34b7d">C++</tspan>
+                    {{else if eq .lang "docker"}}
+                    <tspan fill="#1488c6">DOCKER</tspan>
+                    {{else if eq .lang "shell"}}
+                    <tspan fill="#00d400">SHELL</tspan>
+                    {{end}}
+                </text>
+
+                <g>
+                    <text font-family="Helvetica Nue,Helvetica,Arial,sans-serif" font-size="20" font-weight="300" letter-spacing="1.5" fill="#444444">
+                        <tspan x="21" y="0">{{ .title }}</tspan>
+                    </text>
+                    {{if .tag}}
+                    <text font-family="Helvetica Nue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" font-style="italic" letter-spacing="0.6" fill="#7e7e7e">
+                        <tspan x="21" y="21">{{ .tag }}</tspan>
+                    </text>
+                    {{end}}
+                </g>
+
+                {{if .tag}}
+                <line x1="10" y1="-18" x2="10" y2="24" stroke-width="1" stroke="#e1e1e1"/>
+                {{else}}
+                <line x1="10" y1="-18" x2="10" y2="8" stroke-width="1" stroke="#e1e1e1"/>
+                {{end}}
+            </g>
+        </g>
+    </g>
+</svg>

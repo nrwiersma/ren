@@ -4,6 +4,14 @@ import (
 	"bytes"
 	"path/filepath"
 	"text/template"
+	"errors"
+	"os"
+)
+
+var (
+	ErrTemplate         = errors.New("error rendering template")
+	ErrTemplateNotFound = errors.New("template not found")
+	ErrTemplateInvalid  = errors.New("template invalid")
 )
 
 // Application represents the application.
@@ -21,14 +29,20 @@ func NewApplication(t string) *Application {
 // Render renders a template with the given data.
 func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 	path = filepath.Join(a.templates, path)
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil, ErrTemplateNotFound
+	}
 
 	t, err := template.ParseFiles(path)
 	if err != nil {
-		return nil, err
+		return nil, ErrTemplate
 	}
 
 	buf := bytes.NewBuffer([]byte{})
-	t.Execute(buf, data)
+	err = t.Execute(buf, data)
+	if err != nil {
+		return nil, ErrTemplateInvalid
+	}
 
 	return buf.Bytes(), nil
 }

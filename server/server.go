@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-zoo/bone"
-	"github.com/msales/ren"
+	"github.com/nrwiersma/ren"
 )
 
 // Server represents a http server handler.

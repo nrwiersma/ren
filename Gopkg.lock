@@ -2,10 +2,10 @@
 
 
 [[projects]]
-  name = "github.com/go-redis/redis"
-  packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto"]
-  revision = "a005081ecd2d0d963a1a20efda049223205cf90a"
-  version = "v6.5.4"
+  name = "github.com/cactus/go-statsd-client"
+  packages = ["statsd"]
+  revision = "91c326c3f7bd20f0226d3d1c289dd9f8ce28d33d"
+  version = "v3.1.0"
 
 [[projects]]
   name = "github.com/go-zoo/bone"
@@ -14,10 +14,10 @@
   version = "1.2"
 
 [[projects]]
-  name = "github.com/msales/bidder"
-  packages = ["."]
-  revision = "725b2d27cf7ef4eba928c38da27a7aa2c639c8df"
-  version = "v0.0.15"
+  name = "github.com/msales/pkg"
+  packages = ["httpx/middleware","log","stats"]
+  revision = "8652f51c64e59d4c2bd12c3603ab83c64f4736fb"
+  version = "v1.3.3"
 
 [[projects]]
   name = "gopkg.in/urfave/cli.v1"
@@ -28,6 +28,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f9b3c6ee1a2436a75d0e3ec5a463a49332f786319b16d203514aa1a8942c7203"
+  inputs-digest = "83aa8c6a15400488383a101ea9084299b6992d9672863015259d2b11e0432fef"
   solver-name = "gps-cdcl"
   solver-version = 1
