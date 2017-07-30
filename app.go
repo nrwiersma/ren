@@ -9,7 +9,6 @@ import (
 )
 
 var (
-	ErrTemplate         = errors.New("error rendering template")
 	ErrTemplateNotFound = errors.New("template not found")
 	ErrTemplateInvalid  = errors.New("template invalid")
 )
@@ -35,7 +34,7 @@ func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 
 	t, err := template.ParseFiles(path)
 	if err != nil {
-		return nil, ErrTemplate
+		return nil, err
 	}
 
 	buf := bytes.NewBuffer([]byte{})
@@ -44,7 +43,7 @@ func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 		return nil, ErrTemplateInvalid
 	}
 
-	return buf.Bytes(), nil
+	return bytes.Replace(buf.Bytes(), []byte("<no value>"), []byte{}, -1), nil
 }
 
 // IsHealthy checks the health of the Application.

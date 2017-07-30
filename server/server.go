@@ -24,6 +24,7 @@ func New(app *ren.Application) *Server {
 	s.mux.Get("/:group/:file", ImageHandler(app))
 
 	s.mux.Get("/health", HealthHandler(app))
+	s.mux.NotFound(NotFoundHandler())
 
 	return s
 }
@@ -48,7 +49,16 @@ func ImageHandler(app *ren.Application) http.Handler {
 
 		img, err := app.Render(path, data)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
+			switch err {
+			case ren.ErrTemplateNotFound:
+				w.WriteHeader(http.StatusNotFound)
+
+			case ren.ErrTemplateInvalid:
+				w.WriteHeader(http.StatusBadRequest)
+
+			default:
+				w.WriteHeader(http.StatusInternalServerError)
+			}
 			return
 		}
 
@@ -67,5 +77,12 @@ func HealthHandler(app *ren.Application) http.Handler {
 		}
 
 		w.WriteHeader(http.StatusOK)
+	})
+}
+
+// NotFoundHandler returns a 404.
+func NotFoundHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
 	})
 }
