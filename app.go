@@ -2,15 +2,14 @@ package ren
 
 import (
 	"bytes"
-	"path/filepath"
-	"text/template"
 	"errors"
 	"os"
+	"path/filepath"
+	"text/template"
 )
 
 var (
 	ErrTemplateNotFound = errors.New("template not found")
-	ErrTemplateInvalid  = errors.New("template invalid")
 )
 
 // Application represents the application.
@@ -40,7 +39,7 @@ func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 	buf := bytes.NewBuffer([]byte{})
 	err = t.Execute(buf, data)
 	if err != nil {
-		return nil, ErrTemplateInvalid
+		return nil, err
 	}
 
 	return bytes.Replace(buf.Bytes(), []byte("<no value>"), []byte{}, -1), nil

@@ -21,9 +21,9 @@ func New(app *ren.Application) *Server {
 		mux: bone.New(),
 	}
 
-	s.mux.Get("/:group/:file", ImageHandler(app))
+	s.mux.Get("/:group/:file", NewImageHandler(app))
 
-	s.mux.Get("/health", HealthHandler(app))
+	s.mux.Get("/health", NewHealthHandler(app))
 	s.mux.NotFound(NotFoundHandler())
 
 	return s
@@ -35,49 +35,62 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.mux.ServeHTTP(w, r)
 }
 
-// ImageHandler returns a image rendering handler using Render method from a Application instance.
-func ImageHandler(app *ren.Application) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		group := bone.GetValue(r, "group")
-		file := bone.GetValue(r, "file")
-		path := filepath.Join(group, file+".svg")
-
-		data := map[string]string{}
-		for k, _ := range r.URL.Query() {
-			data[k] = r.URL.Query().Get(k)
-		}
-
-		img, err := app.Render(path, data)
-		if err != nil {
-			switch err {
-			case ren.ErrTemplateNotFound:
-				w.WriteHeader(http.StatusNotFound)
-
-			case ren.ErrTemplateInvalid:
-				w.WriteHeader(http.StatusBadRequest)
-
-			default:
-				w.WriteHeader(http.StatusInternalServerError)
-			}
-			return
-		}
-
-		w.Header().Set("Content-Type", "image/svg+xml")
-		w.Write(img)
-	})
+type ImageHandler struct {
+	Render func(string, interface{}) ([]byte, error)
 }
 
-// HealthHandler returns a health handler using IsHealthy method from a Application instance.
-func HealthHandler(app *ren.Application) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if err := app.IsHealthy(); err != nil {
-			w.WriteHeader(http.StatusServiceUnavailable)
-			io.WriteString(w, err.Error())
-			return
-		}
+// ImageHandler returns a image rendering handler using Render method from a Application instance.
+func NewImageHandler(a *ren.Application) *ImageHandler {
+	return &ImageHandler{
+		Render: a.Render,
+	}
+}
 
-		w.WriteHeader(http.StatusOK)
-	})
+func (h ImageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	group := bone.GetValue(r, "group")
+	file := bone.GetValue(r, "file")
+	path := filepath.Join(group, file+".svg")
+
+	data := map[string]string{}
+	for k := range r.URL.Query() {
+		data[k] = r.URL.Query().Get(k)
+	}
+
+	img, err := h.Render(path, data)
+	if err != nil {
+		switch err {
+		case ren.ErrTemplateNotFound:
+			w.WriteHeader(http.StatusNotFound)
+
+		default:
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+		return
+	}
+
+	w.Header().Set("Content-Type", "image/svg+xml")
+	w.Write(img)
+}
+
+type HealthHandler struct {
+	IsHealthy func() error
+}
+
+// NewHealthHandler returns a health handler using IsHealthy method from a Application instance.
+func NewHealthHandler(a *ren.Application) *HealthHandler {
+	return &HealthHandler{
+		IsHealthy: a.IsHealthy,
+	}
+}
+
+func (h HealthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if err := h.IsHealthy(); err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		io.WriteString(w, err.Error())
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // NotFoundHandler returns a 404.

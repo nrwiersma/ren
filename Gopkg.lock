@@ -8,6 +8,12 @@
   version = "v3.1.0"
 
 [[projects]]
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  version = "v1.1.0"
+
+[[projects]]
   name = "github.com/go-zoo/bone"
   packages = ["."]
   revision = "fd0aebc74e908868b09ac140fb5a53cb363884c1"
@@ -20,6 +26,24 @@
   version = "v1.3.3"
 
 [[projects]]
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/stretchr/objx"
+  packages = ["."]
+  revision = "1a9d0bb9f541897e62256577b352fdbc1fb4fd94"
+
+[[projects]]
+  name = "github.com/stretchr/testify"
+  packages = [".","assert","http","mock"]
+  revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
+  version = "v1.1.4"
+
+[[projects]]
   name = "gopkg.in/urfave/cli.v1"
   packages = ["."]
   revision = "0bdeddeeb0f650497d603c4ad7b20cfe685682f6"
@@ -28,6 +52,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "83aa8c6a15400488383a101ea9084299b6992d9672863015259d2b11e0432fef"
+  inputs-digest = "b93beb7f75fcbb084908e25f7fdf708d856a5b2992c570773aa0362265441c12"
   solver-name = "gps-cdcl"
   solver-version = 1
