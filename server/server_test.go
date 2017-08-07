@@ -4,13 +4,24 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 
 	"github.com/go-zoo/bone"
+	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/server"
 	"github.com/stretchr/testify/assert"
-	"github.com/nrwiersma/ren"
 )
+
+func TestNewImageHandler(t *testing.T) {
+	a := ren.NewApplication("")
+
+	h := server.NewImageHandler(a)
+
+	expect := reflect.ValueOf(a.Render).Pointer()
+	got := reflect.ValueOf(h.Render).Pointer()
+	assert.Equal(t, expect, got)
+}
 
 func TestImageHandler_ServeHTTP(t *testing.T) {
 	tests := []struct {
@@ -44,6 +55,16 @@ func TestImageHandler_ServeHTTP(t *testing.T) {
 
 		assert.Equal(t, tt.code, w.Code)
 	}
+}
+
+func TestNewHealthHandler(t *testing.T) {
+	a := ren.NewApplication("")
+
+	h := server.NewHealthHandler(a)
+
+	expect := reflect.ValueOf(a.IsHealthy).Pointer()
+	got := reflect.ValueOf(h.IsHealthy).Pointer()
+	assert.Equal(t, expect, got)
 }
 
 func TestHealthHandler_ServeHTTP(t *testing.T) {
