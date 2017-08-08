@@ -20,6 +20,18 @@
   version = "1.2"
 
 [[projects]]
+  name = "github.com/mattn/go-colorable"
+  packages = ["."]
+  revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
+  version = "v0.0.9"
+
+[[projects]]
+  name = "github.com/mattn/go-isatty"
+  packages = ["."]
+  revision = "fc9e8d8ef48496124e79ae0df75490096eccf6fe"
+  version = "v0.0.2"
+
+[[projects]]
   name = "github.com/msales/pkg"
   packages = ["httpx/middleware","log","stats"]
   revision = "8652f51c64e59d4c2bd12c3603ab83c64f4736fb"
@@ -32,16 +44,22 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/stretchr/objx"
-  packages = ["."]
-  revision = "1a9d0bb9f541897e62256577b352fdbc1fb4fd94"
-
-[[projects]]
   name = "github.com/stretchr/testify"
-  packages = [".","assert","http","mock"]
+  packages = ["assert"]
   revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
   version = "v1.1.4"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix"]
+  revision = "d8f5ea21b9295e315e612b4bcf4bedea93454d4d"
+
+[[projects]]
+  name = "gopkg.in/inconshreveable/log15.v2"
+  packages = [".","stack","term"]
+  revision = "b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f"
+  version = "v2.11"
 
 [[projects]]
   name = "gopkg.in/urfave/cli.v1"
@@ -52,6 +70,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b93beb7f75fcbb084908e25f7fdf708d856a5b2992c570773aa0362265441c12"
+  inputs-digest = "84cf57ffadd33bca7004b620f6b267a7d3c47be09efeb22db7e64472c5a1e1d5"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -7,16 +7,26 @@ import (
 )
 
 const (
-	FlagPort = "port"
+	FlagPort     = "port"
+	FlagLogLevel = "log.level"
 
 	FlagTemplates = "templates"
 )
 
+var CommonFlags = []cli.Flag{
+	cli.StringFlag{
+		Name:   FlagLogLevel,
+		Value:  "info",
+		Usage:  "Specify the log level. You can use this to enable debug logs by specifying `debug`.",
+		EnvVar: "REN_LOG_LEVEL",
+	},
+}
+
 var Commands = []cli.Command{
 	{
 		Name:  "server",
-		Usage: "Run the bidder HTTP server",
-		Flags: []cli.Flag{
+		Usage: "Run the ren HTTP server",
+		Flags: append([]cli.Flag{
 			cli.StringFlag{
 				Name:   FlagPort,
 				Value:  "80",
@@ -29,14 +39,14 @@ var Commands = []cli.Command{
 				Usage:  "The path to the templates.",
 				EnvVar: "REN_TEMPLATES",
 			},
-		},
+		}, CommonFlags...),
 		Action: runServer,
 	},
 }
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "svg"
+	app.Name = "ren"
 	app.Version = Version
 	app.Commands = Commands
 

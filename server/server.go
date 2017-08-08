@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-zoo/bone"
+	"github.com/msales/pkg/log"
 	"github.com/nrwiersma/ren"
 )
 
@@ -63,6 +64,7 @@ func (h ImageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusNotFound)
 
 		default:
+			log.Error(r.Context(), "could not render template", "error", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		return
