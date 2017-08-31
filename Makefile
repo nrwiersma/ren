@@ -7,5 +7,5 @@ bench:
 
 # Build the docker image
 docker:
-	docker build -t kage .
+	docker build -t ren .
 .PHONY: docker
