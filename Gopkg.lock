@@ -20,6 +20,12 @@
   version = "1.2"
 
 [[projects]]
+  name = "github.com/joho/godotenv"
+  packages = [".","autoload"]
+  revision = "726cc8b906e3d31c70a9671c90a13716a8d3f50d"
+  version = "v1.1"
+
+[[projects]]
   name = "github.com/mattn/go-colorable"
   packages = ["."]
   revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
@@ -70,6 +76,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "84cf57ffadd33bca7004b620f6b267a7d3c47be09efeb22db7e64472c5a1e1d5"
+  inputs-digest = "c1ecc12e6dbce7856bb6b5c3e895590dec61e7dc2c6f12a36e1274c3edbefd8e"
   solver-name = "gps-cdcl"
   solver-version = 1

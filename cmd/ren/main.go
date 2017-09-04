@@ -6,6 +6,8 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
+import _ "github.com/joho/godotenv/autoload"
+
 const (
 	FlagPort     = "port"
 	FlagLogLevel = "log.level"
