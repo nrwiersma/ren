@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"os"
 
+	"net/url"
+
+	"github.com/nrwiersma/pkg/stats"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/server"
 	"github.com/nrwiersma/ren/server/middleware"
@@ -51,9 +54,36 @@ func newLogger(c *Context) (log15.Logger, error) {
 	}
 
 	h := log15.LvlFilterHandler(v, log15.StreamHandler(os.Stdout, log15.LogfmtFormat()))
+	if lvl == "debug" {
+		h = log15.CallerFileHandler(h)
+	}
 
 	l := log15.New()
-	l.SetHandler(h)
+	l.SetHandler(log15.LazyHandler(h))
 
 	return l, nil
+}
+
+func newStats(c *Context) (stats.Stats, error) {
+	dsn := c.String(FlagStats)
+	if dsn == "" {
+		return stats.Null, nil
+	}
+
+	uri, err := url.Parse(dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	switch uri.Scheme {
+	case "statsd":
+		return newStatsdStats(uri.Host)
+
+	default:
+		return stats.Null, nil
+	}
+}
+
+func newStatsdStats(addr string) (stats.Stats, error) {
+	return stats.NewStatsd(addr, "ren")
 }

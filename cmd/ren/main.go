@@ -12,6 +12,8 @@ const (
 	FlagPort     = "port"
 	FlagLogLevel = "log.level"
 
+	FlagStats = "stats"
+
 	FlagTemplates = "templates"
 )
 
@@ -21,6 +23,12 @@ var CommonFlags = []cli.Flag{
 		Value:  "info",
 		Usage:  "Specify the log level. You can use this to enable debug logs by specifying `debug`.",
 		EnvVar: "REN_LOG_LEVEL",
+	},
+	cli.StringFlag{
+		Name:   FlagStats,
+		Value:  "",
+		Usage:  "The stats backend to use. (e.g. statsd://localhost:8125)",
+		EnvVar: "REN_STATS",
 	},
 }
 

@@ -40,8 +40,14 @@
 [[projects]]
   name = "github.com/msales/pkg"
   packages = ["httpx/middleware","log","stats"]
-  revision = "8652f51c64e59d4c2bd12c3603ab83c64f4736fb"
-  version = "v1.3.3"
+  revision = "62d11ccc8a6ae737c15ea462e1fdba3746776052"
+  version = "v1.5.1"
+
+[[projects]]
+  name = "github.com/nrwiersma/pkg"
+  packages = ["stats"]
+  revision = "62d11ccc8a6ae737c15ea462e1fdba3746776052"
+  version = "v1.5.1"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -59,7 +65,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "d8f5ea21b9295e315e612b4bcf4bedea93454d4d"
+  revision = "a5054c7c1385fd50d9394475365355a87a7873ec"
 
 [[projects]]
   name = "gopkg.in/inconshreveable/log15.v2"
@@ -70,12 +76,12 @@
 [[projects]]
   name = "gopkg.in/urfave/cli.v1"
   packages = ["."]
-  revision = "0bdeddeeb0f650497d603c4ad7b20cfe685682f6"
-  version = "v1.19.1"
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c1ecc12e6dbce7856bb6b5c3e895590dec61e7dc2c6f12a36e1274c3edbefd8e"
+  inputs-digest = "b4f138a2c2495a21194cf055dba9d6fa34d554fedb245a0363f5a6e44197a737"
   solver-name = "gps-cdcl"
   solver-version = 1
