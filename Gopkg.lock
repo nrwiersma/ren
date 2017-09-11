@@ -40,14 +40,8 @@
 [[projects]]
   name = "github.com/msales/pkg"
   packages = ["httpx/middleware","log","stats"]
-  revision = "62d11ccc8a6ae737c15ea462e1fdba3746776052"
-  version = "v1.5.1"
-
-[[projects]]
-  name = "github.com/nrwiersma/pkg"
-  packages = ["stats"]
-  revision = "62d11ccc8a6ae737c15ea462e1fdba3746776052"
-  version = "v1.5.1"
+  revision = "d11c71f0b5d9fc7dc49582edb9a4c7277649c579"
+  version = "v1.6.1"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -82,6 +76,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b4f138a2c2495a21194cf055dba9d6fa34d554fedb245a0363f5a6e44197a737"
+  inputs-digest = "eb9dec63e84ead43eb1973ccfef08a7c69131e6a3f08d5693ae51f9e6c1610fd"
   solver-name = "gps-cdcl"
   solver-version = 1

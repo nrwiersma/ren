@@ -1,6 +1,6 @@
 [[constraint]]
   name = "github.com/msales/pkg"
-  version = "^1.3.0"
+  version = "^1.6.0"
 
 [[constraint]]
   name = "github.com/go-zoo/bone"
