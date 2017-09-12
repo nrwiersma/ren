@@ -44,7 +44,7 @@ func newLogger(c *Context) (log15.Logger, error) {
 func logFormat(r *log15.Record) []byte {
 	b := &bytes.Buffer{}
 	lvl := strings.ToUpper(r.Lvl.String())
-	fmt.Fprintf(b, "%s %s %s ", r.Time.Format("2006-01-02T15:04:05-0700"), lvl, r.Msg)
+	fmt.Fprintf(b, "%s %s %s ", r.Time.UTC().Format("2006-01-02T15:04:05"), lvl, r.Msg)
 	b.WriteByte('\n')
 	return b.Bytes()
 }
