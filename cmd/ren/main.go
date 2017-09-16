@@ -8,6 +8,7 @@ import (
 
 import _ "github.com/joho/godotenv/autoload"
 
+// Flag constants declared for CLI use.
 const (
 	FlagPort     = "port"
 	FlagLogLevel = "log.level"
@@ -17,7 +18,7 @@ const (
 	FlagTemplates = "templates"
 )
 
-var CommonFlags = []cli.Flag{
+var commonFlags = []cli.Flag{
 	cli.StringFlag{
 		Name:   FlagLogLevel,
 		Value:  "info",
@@ -32,7 +33,7 @@ var CommonFlags = []cli.Flag{
 	},
 }
 
-var Commands = []cli.Command{
+var commands = []cli.Command{
 	{
 		Name:  "server",
 		Usage: "Run the ren HTTP server",
@@ -49,7 +50,7 @@ var Commands = []cli.Command{
 				Usage:  "The path to the templates.",
 				EnvVar: "REN_TEMPLATES",
 			},
-		}, CommonFlags...),
+		}, commonFlags...),
 		Action: runServer,
 	},
 }
@@ -58,7 +59,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "ren"
 	app.Version = Version
-	app.Commands = Commands
+	app.Commands = commands
 
 	app.Run(os.Args)
 }

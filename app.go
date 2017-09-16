@@ -8,6 +8,7 @@ import (
 	"text/template"
 )
 
+// Application errors
 var (
 	ErrTemplateNotFound = errors.New("template not found")
 )

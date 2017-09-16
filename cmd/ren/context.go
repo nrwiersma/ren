@@ -10,6 +10,7 @@ import (
 
 type netCtx context.Context
 
+// Context provides instance of services the CLI consumes.
 type Context struct {
 	*cli.Context
 	netCtx

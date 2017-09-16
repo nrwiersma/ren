@@ -1,9 +1,7 @@
 package server
 
 import (
-	"io"
 	"net/http"
-
 	"path/filepath"
 
 	"github.com/go-zoo/bone"
@@ -36,11 +34,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.mux.ServeHTTP(w, r)
 }
 
+// ImageHandler represents an application image http handler.
 type ImageHandler struct {
 	Render func(string, interface{}) ([]byte, error)
 }
 
-// ImageHandler returns a image rendering handler using Render method from a Application instance.
+// NewImageHandler returns a image rendering handler using Render method from a Application instance.
 func NewImageHandler(a *ren.Application) *ImageHandler {
 	return &ImageHandler{
 		Render: a.Render,
@@ -74,6 +73,7 @@ func (h ImageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write(img)
 }
 
+// HealthHandler represents an application health http handler.
 type HealthHandler struct {
 	IsHealthy func() error
 }

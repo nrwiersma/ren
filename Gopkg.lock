@@ -40,8 +40,8 @@
 [[projects]]
   name = "github.com/msales/pkg"
   packages = ["httpx/middleware","log","stats"]
-  revision = "d11c71f0b5d9fc7dc49582edb9a4c7277649c579"
-  version = "v1.6.1"
+  revision = "aeee457e8b55d5b0cc30c31a39d16a3807022c39"
+  version = "v1.7.0"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -59,7 +59,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "a5054c7c1385fd50d9394475365355a87a7873ec"
+  revision = "062cd7e4e68206d8bab9b18396626e855c992658"
 
 [[projects]]
   name = "gopkg.in/inconshreveable/log15.v2"
@@ -76,6 +76,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "eb9dec63e84ead43eb1973ccfef08a7c69131e6a3f08d5693ae51f9e6c1610fd"
+  inputs-digest = "022e4171557849aa5fd29ee732e982cdbc9e72fb866bae70daf3347795723dd4"
   solver-name = "gps-cdcl"
   solver-version = 1

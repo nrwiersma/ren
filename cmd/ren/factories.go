@@ -1,16 +1,16 @@
 package main
 
 import (
+	"bytes"
+	"fmt"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/msales/pkg/log"
 	"github.com/msales/pkg/stats"
 	"github.com/nrwiersma/ren"
 	"gopkg.in/inconshreveable/log15.v2"
-	"fmt"
-	"bytes"
-	"strings"
 )
 
 // Application =============================
@@ -78,6 +78,6 @@ func newStatsdStats(addr string) (stats.Stats, error) {
 	return stats.NewStatsd(addr, "ren")
 }
 
-func newL2metStats(log log.Logger) (stats.Stats) {
-	return stats.NewL2met(log, "ren");
+func newL2metStats(log log.Logger) stats.Stats {
+	return stats.NewL2met(log, "ren")
 }

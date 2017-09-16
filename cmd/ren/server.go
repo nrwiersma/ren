@@ -32,5 +32,5 @@ func newServer(ctx *Context, app *ren.Application) http.Handler {
 	s := server.New(app)
 
 	h := middleware.Common(s)
-	return middleware.WithContext(h, ctx)
+	return middleware.WithContext(ctx, h)
 }

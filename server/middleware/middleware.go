@@ -8,8 +8,8 @@ import (
 )
 
 // WithContext wraps pkg WithContext.
-func WithContext(h http.Handler, ctx context.Context) http.Handler {
-	return middleware.WithContext(h, ctx)
+func WithContext(ctx context.Context, h http.Handler) http.Handler {
+	return middleware.WithContext(ctx, h)
 }
 
 // Common wraps the handler with common middleware.
