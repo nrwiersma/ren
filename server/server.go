@@ -61,11 +61,11 @@ func (h ImageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch err {
 		case ren.ErrTemplateNotFound:
-			w.WriteHeader(http.StatusNotFound)
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 
 		default:
 			log.Error(r.Context(), "could not render template", "error", err)
-			w.WriteHeader(http.StatusInternalServerError)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
 		return
 	}
@@ -87,8 +87,7 @@ func NewHealthHandler(a *ren.Application) *HealthHandler {
 
 func (h HealthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err := h.IsHealthy(); err != nil {
-		w.WriteHeader(http.StatusServiceUnavailable)
-		io.WriteString(w, err.Error())
+		http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
 		return
 	}
 
@@ -98,6 +97,6 @@ func (h HealthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // NotFoundHandler returns a 404.
 func NotFoundHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusNotFound)
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 	})
 }
