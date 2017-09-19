@@ -9,20 +9,30 @@ import (
 	"github.com/nrwiersma/ren"
 )
 
+// Application represents the main application.
+type Application interface {
+	// Render renders a template with the given data.
+	Render(path string, data interface{}) ([]byte, error)
+	// IsHealthy checks the health of the Application.
+	IsHealthy() error
+}
+
 // Server represents a http server handler.
 type Server struct {
+	app Application
 	mux *bone.Mux
 }
 
 // New creates a new Server instance.
-func New(app *ren.Application) *Server {
+func New(app Application) *Server {
 	s := &Server{
+		app: app,
 		mux: bone.New(),
 	}
 
-	s.mux.Get("/:group/:file", NewImageHandler(app))
+	s.mux.GetFunc("/:group/:file", s.ImageHandler)
 
-	s.mux.Get("/health", NewHealthHandler(app))
+	s.mux.GetFunc("/health", s.HealthHandler)
 	s.mux.NotFound(NotFoundHandler())
 
 	return s
@@ -34,19 +44,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.mux.ServeHTTP(w, r)
 }
 
-// ImageHandler represents an application image http handler.
-type ImageHandler struct {
-	Render func(string, interface{}) ([]byte, error)
-}
-
-// NewImageHandler returns a image rendering handler using Render method from a Application instance.
-func NewImageHandler(a *ren.Application) *ImageHandler {
-	return &ImageHandler{
-		Render: a.Render,
-	}
-}
-
-func (h ImageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+// ImageHandler handles requests to render an image.
+func (s *Server) ImageHandler(w http.ResponseWriter, r *http.Request) {
 	group := bone.GetValue(r, "group")
 	file := bone.GetValue(r, "file")
 	path := filepath.Join(group, file+".svg")
@@ -56,7 +55,7 @@ func (h ImageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		data[k] = r.URL.Query().Get(k)
 	}
 
-	img, err := h.Render(path, data)
+	img, err := s.app.Render(path, data)
 	if err != nil {
 		switch err {
 		case ren.ErrTemplateNotFound:
@@ -73,20 +72,8 @@ func (h ImageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write(img)
 }
 
-// HealthHandler represents an application health http handler.
-type HealthHandler struct {
-	IsHealthy func() error
-}
-
-// NewHealthHandler returns a health handler using IsHealthy method from a Application instance.
-func NewHealthHandler(a *ren.Application) *HealthHandler {
-	return &HealthHandler{
-		IsHealthy: a.IsHealthy,
-	}
-}
-
-func (h HealthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if err := h.IsHealthy(); err != nil {
+func (s *Server) HealthHandler(w http.ResponseWriter, r *http.Request) {
+	if err := s.app.IsHealthy(); err != nil {
 		http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
 		return
 	}

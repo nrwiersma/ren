@@ -4,26 +4,27 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 
-	"github.com/go-zoo/bone"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/server"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewImageHandler(t *testing.T) {
-	a := ren.NewApplication("")
-
-	h := server.NewImageHandler(a)
-
-	expect := reflect.ValueOf(a.Render).Pointer()
-	got := reflect.ValueOf(h.Render).Pointer()
-	assert.Equal(t, expect, got)
+type testApp struct {
+	render    func(path string, data interface{}) ([]byte, error)
+	isHealthy func() error
 }
 
-func TestImageHandler_ServeHTTP(t *testing.T) {
+func (a testApp) Render(path string, data interface{}) ([]byte, error) {
+	return a.render(path, data)
+}
+
+func (a testApp) IsHealthy() error {
+	return a.isHealthy()
+}
+
+func TestServer_ImageHandler(t *testing.T) {
 	tests := []struct {
 		url  string
 		err  error
@@ -39,35 +40,25 @@ func TestImageHandler_ServeHTTP(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		mux := bone.New()
-		mux.Get("/:group/:file", server.ImageHandler{
-			Render: func(p string, d interface{}) ([]byte, error) {
+		app := testApp{
+			render: func(p string, d interface{}) ([]byte, error) {
 				assert.Equal(t, tt.path, p)
 				assert.Equal(t, tt.data, d)
 
 				return []byte{}, tt.err
 			},
-		})
+		}
+		srv := server.New(app)
 
+		r := httptest.NewRequest("GET", tt.url, nil)
 		w := httptest.NewRecorder()
-		req := httptest.NewRequest("GET", tt.url, nil)
-		mux.ServeHTTP(w, req)
+		srv.ServeHTTP(w, r)
 
 		assert.Equal(t, tt.code, w.Code)
 	}
 }
 
-func TestNewHealthHandler(t *testing.T) {
-	a := ren.NewApplication("")
-
-	h := server.NewHealthHandler(a)
-
-	expect := reflect.ValueOf(a.IsHealthy).Pointer()
-	got := reflect.ValueOf(h.IsHealthy).Pointer()
-	assert.Equal(t, expect, got)
-}
-
-func TestHealthHandler_ServeHTTP(t *testing.T) {
+func TestServer_HealthHandler(t *testing.T) {
 	tests := []struct {
 		err  error
 		code int
@@ -77,15 +68,16 @@ func TestHealthHandler_ServeHTTP(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		h := server.HealthHandler{
-			IsHealthy: func() error {
+		app := testApp{
+			isHealthy: func() error {
 				return tt.err
 			},
 		}
+		srv := server.New(app)
 
 		w := httptest.NewRecorder()
 		req := httptest.NewRequest("GET", "/health", nil)
-		h.ServeHTTP(w, req)
+		srv.ServeHTTP(w, req)
 
 		assert.Equal(t, tt.code, w.Code)
 	}
