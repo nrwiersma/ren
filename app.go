@@ -38,8 +38,7 @@ func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 	}
 
 	buf := bytes.NewBuffer([]byte{})
-	err = t.Execute(buf, data)
-	if err != nil {
+	if err = t.Execute(buf, data); err != nil {
 		return nil, err
 	}
 

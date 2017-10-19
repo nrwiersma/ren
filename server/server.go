@@ -72,6 +72,7 @@ func (s *Server) ImageHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(img)
 }
 
+// HealthHandler handles health requests.
 func (s *Server) HealthHandler(w http.ResponseWriter, r *http.Request) {
 	if err := s.app.IsHealthy(); err != nil {
 		http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
