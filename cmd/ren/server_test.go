@@ -21,8 +21,7 @@ func TestServer_Health(t *testing.T) {
 }
 
 func newTestServer(t *testing.T) *httptest.Server {
-	ctx, fs := newTestContext()
-	fs.String(FlagStats, "statsd://host", "")
+	ctx, _ := newTestContext()
 
 	app, err := newApplication(ctx)
 	if err != nil {
