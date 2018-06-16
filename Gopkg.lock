@@ -4,14 +4,20 @@
 [[projects]]
   name = "github.com/cactus/go-statsd-client"
   packages = ["statsd"]
-  revision = "91c326c3f7bd20f0226d3d1c289dd9f8ce28d33d"
-  version = "v3.1.0"
+  revision = "138b925ccdf617776955904ba7759fce64406cec"
+  version = "v3.1.1"
 
 [[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
+
+[[projects]]
+  name = "github.com/go-stack/stack"
+  packages = ["."]
+  revision = "259ab82a6cad3992b4e21ff5cac294ccb06474bc"
+  version = "v1.7.0"
 
 [[projects]]
   name = "github.com/go-zoo/bone"
@@ -21,9 +27,12 @@
 
 [[projects]]
   name = "github.com/joho/godotenv"
-  packages = [".","autoload"]
-  revision = "726cc8b906e3d31c70a9671c90a13716a8d3f50d"
-  version = "v1.1"
+  packages = [
+    ".",
+    "autoload"
+  ]
+  revision = "a79fa1e548e2c689c241d10173efd51e5d689d5b"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -34,14 +43,18 @@
 [[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
-  revision = "fc9e8d8ef48496124e79ae0df75490096eccf6fe"
-  version = "v0.0.2"
+  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
+  version = "v0.0.3"
 
 [[projects]]
   name = "github.com/msales/pkg"
-  packages = ["httpx/middleware","log","stats"]
-  revision = "aeee457e8b55d5b0cc30c31a39d16a3807022c39"
-  version = "v1.7.0"
+  packages = [
+    "httpx/middleware",
+    "log",
+    "stats"
+  ]
+  revision = "64c04cdacb9e70923224416a3a18f4f5fae2be42"
+  version = "v1.7.2"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -52,20 +65,20 @@
 [[projects]]
   name = "github.com/stretchr/testify"
   packages = ["assert"]
-  revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
-  version = "v1.1.4"
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "062cd7e4e68206d8bab9b18396626e855c992658"
+  revision = "6c888cc515d3ed83fc103cf1d84468aad274b0a7"
 
 [[projects]]
   name = "gopkg.in/inconshreveable/log15.v2"
-  packages = [".","stack","term"]
-  revision = "b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f"
-  version = "v2.11"
+  packages = ["."]
+  revision = "0decfc6c20d9ca0ad143b0e89dcaa20f810b4fb3"
+  version = "v2.13"
 
 [[projects]]
   name = "gopkg.in/urfave/cli.v1"
@@ -76,6 +89,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "022e4171557849aa5fd29ee732e982cdbc9e72fb866bae70daf3347795723dd4"
+  inputs-digest = "39b08e1e152fd4b5857ef472e0896b031d446ba83c9910ae7422ae590ebf73aa"
   solver-name = "gps-cdcl"
   solver-version = 1

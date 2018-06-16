@@ -1,6 +1,6 @@
 [[constraint]]
   name = "github.com/msales/pkg"
-  version = "^1.7.0"
+  version = "1.*"
 
 [[constraint]]
   name = "github.com/go-zoo/bone"
@@ -16,7 +16,7 @@
 
 [[constraint]]
   name = "github.com/joho/godotenv"
-  version = "1.1"
+  version = "1.*"
 
 [[constraint]]
   name = "github.com/stretchr/testify"
