@@ -1,21 +1,20 @@
 # Build container
-FROM golang:1.9 as builder
+FROM golang:1.11 as builder
 
-RUN go get -u github.com/golang/dep/cmd/dep
+ENV GO111MODULE=on
 
-WORKDIR /go/src/github.com/nrwiersma/ren/
+WORKDIR /app/
 COPY ./ .
-RUN dep ensure
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-s' -o ren ./cmd/ren
+RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags "-s -X main.version=$(git describe --tags --always)" -o ren ./cmd/ren
 
 # Run container
 FROM scratch
 
-COPY --from=builder /go/src/github.com/nrwiersma/ren/ren .
+COPY --from=builder /app/ren .
 
-ENV REN_PORT "80"
-ENV REN_TEMPLATES "templates"
+ENV PORT "80"
+ENV TEMPLATES "templates"
 
 EXPOSE 80
 CMD ["./ren", "server"]
