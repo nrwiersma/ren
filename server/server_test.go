@@ -82,11 +82,3 @@ func TestServer_HealthHandler(t *testing.T) {
 		assert.Equal(t, tt.code, w.Code)
 	}
 }
-
-func TestNotFoundHandler(t *testing.T) {
-	w := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", "/", nil)
-	server.NotFoundHandler().ServeHTTP(w, req)
-
-	assert.Equal(t, http.StatusNotFound, w.Code)
-}

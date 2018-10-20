@@ -33,7 +33,6 @@ func New(app Application) *Server {
 	s.mux.GetFunc("/:group/:file", s.ImageHandler)
 
 	s.mux.GetFunc("/health", s.HealthHandler)
-	s.mux.NotFound(NotFoundHandler())
 
 	return s
 }
@@ -80,11 +79,4 @@ func (s *Server) HealthHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-}
-
-// NotFoundHandler returns a 404.
-func NotFoundHandler() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-	})
 }
