@@ -22,7 +22,7 @@ func TestServer_Health(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	assert.Equal(t, 200, res.StatusCode);
+	assert.Equal(t, 200, res.StatusCode)
 }
 
 func newTestContext() (*clix.Context, *flag.FlagSet) {
