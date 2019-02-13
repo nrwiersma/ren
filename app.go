@@ -3,9 +3,9 @@ package ren
 import (
 	"bytes"
 	"errors"
+	"strings"
 	"text/template"
 
-	"github.com/Masterminds/sprig"
 	"github.com/hamba/pkg/log"
 	"github.com/hamba/pkg/stats"
 )
@@ -43,7 +43,12 @@ func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 		return nil, ErrTemplateNotFound
 	}
 
-	tmpl, err := template.New("template").Funcs(sprig.FuncMap()).Parse(svg)
+	tmpl, err := template.New("template").Funcs(template.FuncMap{
+		"trim":  strings.TrimSpace,
+		"upper": strings.ToUpper,
+		"lower": strings.ToLower,
+		"title": strings.Title,
+	}).Parse(svg)
 	if err != nil {
 		return nil, err
 	}
