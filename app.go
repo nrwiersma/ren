@@ -5,6 +5,7 @@ import (
 	"errors"
 	"text/template"
 
+	"github.com/Masterminds/sprig"
 	"github.com/hamba/pkg/log"
 	"github.com/hamba/pkg/stats"
 )
@@ -42,7 +43,7 @@ func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 		return nil, ErrTemplateNotFound
 	}
 
-	tmpl, err := template.New("template").Parse(svg)
+	tmpl, err := template.New("template").Funcs(sprig.FuncMap()).Parse(svg)
 	if err != nil {
 		return nil, err
 	}
