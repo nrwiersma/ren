@@ -3,15 +3,14 @@ package main
 import (
 	"os"
 
-	"github.com/msales/pkg/clix"
-	"github.com/urfave/cli"
+	"github.com/hamba/cmd"
+	"gopkg.in/urfave/cli.v1"
 )
 
 import _ "github.com/joho/godotenv/autoload"
 
-// Flag constants declared for CLI use.
 const (
-	FlagTemplates = "templates"
+	flagTemplates = "templates"
 )
 
 var version = "¯\\_(ツ)_/¯"
@@ -20,14 +19,14 @@ var commands = []cli.Command{
 	{
 		Name:  "server",
 		Usage: "Run the ren HTTP server",
-		Flags: clix.Flags{
+		Flags: cmd.Flags{
 			cli.StringFlag{
-				Name:   FlagTemplates,
-				Value:  "./templates",
-				Usage:  "The path to the templates.",
+				Name:   flagTemplates,
+				Value:  "file:///./templates",
+				Usage:  "The URI to the templates. Supported schemes: 'file', 'http', 'https'.",
 				EnvVar: "TEMPLATES",
 			},
-		}.Merge(clix.CommonFlags, clix.ServerFlags),
+		}.Merge(cmd.CommonFlags, cmd.ServerFlags),
 		Action: runServer,
 	},
 }

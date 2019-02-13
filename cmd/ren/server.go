@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/msales/pkg/clix"
-	"github.com/msales/pkg/log"
+	"github.com/hamba/cmd"
+	"github.com/hamba/pkg/httpx"
+	"github.com/hamba/pkg/log"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/server"
 	"github.com/nrwiersma/ren/server/middleware"
-	"github.com/urfave/cli"
+	"gopkg.in/urfave/cli.v1"
 )
 
 func runServer(c *cli.Context) {
-	ctx, err := clix.NewContext(c)
+	ctx, err := cmd.NewContext(c)
 	if err != nil {
 		panic(err)
 	}
@@ -23,17 +24,18 @@ func runServer(c *cli.Context) {
 		log.Fatal(ctx, err.Error())
 	}
 
-	port := c.String(clix.FlagPort)
-	s := newServer(ctx, app)
+	port := c.String(cmd.FlagPort)
+	s := newServer(app)
 	log.Info(ctx, fmt.Sprintf("Starting server on port %s", port))
 	if err := http.ListenAndServe(":"+port, s); err != nil {
 		log.Fatal(ctx, "ren: server error", "error", err.Error())
 	}
 }
 
-func newServer(ctx *clix.Context, app *ren.Application) http.Handler {
-	s := server.New(app)
+func newServer(app *ren.Application) http.Handler {
+	health := httpx.NewHealthMux(app)
+	srv := server.NewMux(app)
+	mux := httpx.CombineMuxes(health, srv)
 
-	h := middleware.Common(s)
-	return middleware.WithContext(ctx, h)
+	return middleware.Common(mux, app)
 }

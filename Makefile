@@ -1,9 +1,4 @@
-include github.com/msales/make/golang
-
-# Run all benchmarks
-bench:
-	@go test -bench=. $(shell go list ./... | grep -v /vendor/)
-.PHONY: bench
+include github.com/hamba/make/golang
 
 # Build the docker image
 docker:

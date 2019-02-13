@@ -5,78 +5,56 @@ import (
 	"path/filepath"
 
 	"github.com/go-zoo/bone"
-	"github.com/msales/pkg/log"
+	"github.com/hamba/pkg/httpx"
+	"github.com/hamba/pkg/log"
+	"github.com/hamba/pkg/stats"
 	"github.com/nrwiersma/ren"
 )
 
 // Application represents the main application.
 type Application interface {
+	log.Loggable
+	stats.Statable
+
 	// Render renders a template with the given data.
 	Render(path string, data interface{}) ([]byte, error)
-	// IsHealthy checks the health of the Application.
-	IsHealthy() error
 }
 
-// Server represents a http server handler.
-type Server struct {
-	app Application
-	mux *bone.Mux
-}
+// New creates a new server Mux.
+func NewMux(app Application) *bone.Mux {
+	mux := httpx.NewMux()
 
-// New creates a new Server instance.
-func New(app Application) *Server {
-	s := &Server{
-		app: app,
-		mux: bone.New(),
-	}
+	mux.GetFunc("/:group/:file", ImageHandler(app))
 
-	s.mux.GetFunc("/:group/:file", s.ImageHandler)
-
-	s.mux.GetFunc("/health", s.HealthHandler)
-
-	return s
-}
-
-// ServeHTTP dispatches the request to the handler whose
-// pattern most closely matches the request URL.
-func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.mux.ServeHTTP(w, r)
+	return mux
 }
 
 // ImageHandler handles requests to render an image.
-func (s *Server) ImageHandler(w http.ResponseWriter, r *http.Request) {
-	group := bone.GetValue(r, "group")
-	file := bone.GetValue(r, "file")
-	path := filepath.Join(group, file+".svg")
+func ImageHandler(app Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		group := bone.GetValue(r, "group")
+		file := bone.GetValue(r, "file")
+		path := filepath.Join(group, file+".svg")
 
-	data := map[string]string{}
-	for k := range r.URL.Query() {
-		data[k] = r.URL.Query().Get(k)
-	}
-
-	img, err := s.app.Render(path, data)
-	if err != nil {
-		switch err {
-		case ren.ErrTemplateNotFound:
-			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-
-		default:
-			log.Error(r.Context(), "could not render template", "error", err)
-			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		data := map[string]string{}
+		for k := range r.URL.Query() {
+			data[k] = r.URL.Query().Get(k)
 		}
-		return
+
+		img, err := app.Render(path, data)
+		if err != nil {
+			switch err {
+			case ren.ErrTemplateNotFound:
+				http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+
+			default:
+				log.Error(app, "could not render template", "error", err)
+				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			}
+			return
+		}
+
+		w.Header().Set("Content-Type", "image/svg+xml")
+		_, _ = w.Write(img)
 	}
-
-	w.Header().Set("Content-Type", "image/svg+xml")
-	w.Write(img)
-}
-
-// HealthHandler handles health requests.
-func (s *Server) HealthHandler(w http.ResponseWriter, r *http.Request) {
-	if err := s.app.IsHealthy(); err != nil {
-		http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
 }

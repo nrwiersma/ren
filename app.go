@@ -3,9 +3,10 @@ package ren
 import (
 	"bytes"
 	"errors"
-	"os"
-	"path/filepath"
 	"text/template"
+
+	"github.com/hamba/pkg/log"
+	"github.com/hamba/pkg/stats"
 )
 
 // Application errors
@@ -13,32 +14,41 @@ var (
 	ErrTemplateNotFound = errors.New("template not found")
 )
 
+// Reader represents a template Reader.
+type Reader interface {
+	Read(path string) (string, error)
+}
+
 // Application represents the application.
 type Application struct {
-	templates string
+	logger  log.Logger
+	statter stats.Statter
+
+	Reader Reader
 }
 
 // NewApplication creates an instance of Application.
-func NewApplication(t string) *Application {
+func NewApplication(l log.Logger, s stats.Statter) *Application {
 	return &Application{
-		templates: t,
+		logger:  l,
+		statter: s,
 	}
 }
 
 // Render renders a template with the given data.
 func (a *Application) Render(path string, data interface{}) ([]byte, error) {
-	path = filepath.Join(a.templates, path)
-	if _, err := os.Stat(path); os.IsNotExist(err) {
+	svg, err := a.Reader.Read(path)
+	if err != nil {
 		return nil, ErrTemplateNotFound
 	}
 
-	t, err := template.ParseFiles(path)
+	tmpl, err := template.New("template").Parse(svg)
 	if err != nil {
 		return nil, err
 	}
 
 	buf := bytes.NewBuffer([]byte{})
-	if err = t.Execute(buf, data); err != nil {
+	if err = tmpl.Execute(buf, data); err != nil {
 		return nil, err
 	}
 
@@ -48,4 +58,14 @@ func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 // IsHealthy checks the health of the Application.
 func (a *Application) IsHealthy() error {
 	return nil
+}
+
+// Logger returns the Logger attached to the Application.
+func (a *Application) Logger() log.Logger {
+	return a.logger
+}
+
+// Statter returns the Statter attached to the Application.
+func (a *Application) Statter() stats.Statter {
+	return a.statter
 }

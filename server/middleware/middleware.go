@@ -1,21 +1,21 @@
 package middleware
 
 import (
-	"context"
 	"net/http"
 
-	"github.com/msales/pkg/httpx/middleware"
+	"github.com/hamba/pkg/httpx/middleware"
+	"github.com/hamba/pkg/log"
+	"github.com/hamba/pkg/stats"
 )
 
-// WithContext wraps pkg WithContext.
-func WithContext(ctx context.Context, h http.Handler) http.Handler {
-	return middleware.WithContext(ctx, h)
+// Monitorable represents a Loggable, Statable object.
+type Monitorable interface {
+	log.Loggable
+	stats.Statable
 }
 
 // Common wraps the handler with common middleware.
-func Common(h http.Handler) http.Handler {
-	h = middleware.WithResponseTime(h)
-	h = middleware.WithRequestStats(h)
-
-	return middleware.WithRecovery(h)
+func Common(h http.Handler, m Monitorable) http.Handler {
+	h = middleware.WithRequestStats(h, m)
+	return middleware.WithRecovery(h, m)
 }
