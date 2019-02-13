@@ -12,9 +12,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags "-s -X main.version=$(git desc
 FROM scratch
 
 COPY --from=builder /app/ren .
+COPY --from=builder /etc/ssl/certs /etc/ssl/certs
 
 ENV PORT "80"
-ENV TEMPLATES "templates"
+ENV TEMPLATES "file:///templates"
 
 EXPOSE 80
 CMD ["./ren", "server"]
