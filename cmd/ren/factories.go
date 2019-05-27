@@ -37,7 +37,7 @@ func newReader(dsn string) (ren.Reader, error) {
 		return reader.NewFileReader(u.Path), nil
 
 	case "http", "https":
-		return reader.NewHttpReader(dsn), nil
+		return reader.NewHTTPReader(dsn), nil
 
 	default:
 		return nil, fmt.Errorf("ren: unsupported template sheme: %s", u.Scheme)

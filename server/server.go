@@ -20,7 +20,7 @@ type Application interface {
 	Render(path string, data interface{}) ([]byte, error)
 }
 
-// New creates a new server Mux.
+// NewMux creates a new server mux.
 func NewMux(app Application) *bone.Mux {
 	mux := httpx.NewMux()
 
