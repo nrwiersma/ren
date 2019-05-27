@@ -8,17 +8,20 @@ import (
 	path2 "path"
 )
 
-type HttpReader struct {
+// HTTPReader is an http file reader.
+type HTTPReader struct {
 	base string
 }
 
-func NewHttpReader(path string) *HttpReader {
-	return &HttpReader{
+// NewHTTPReader returns an http file reader.
+func NewHTTPReader(path string) *HTTPReader {
+	return &HTTPReader{
 		base: path,
 	}
 }
 
-func (r *HttpReader) Read(path string) (string, error) {
+// Read reads the file at the given path.
+func (r *HTTPReader) Read(path string) (string, error) {
 	u, err := url.Parse(r.base)
 	if err != nil {
 		return "", nil

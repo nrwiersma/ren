@@ -2,22 +2,26 @@ sudo: false
 
 language: go
 go:
-  - "1.11"
+  - "1.12"
   - "1.x"
+
+cache:
+  directories:
+    - $GOPATH/pkg/mod
 
 env:
   - GO111MODULE=on
 
 before_install:
   - go get -u golang.org/x/lint/golint
-  - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
+  - go get github.com/mattn/goveralls
 
 script:
   - golint ./...
   - go vet ./...
-  - go test -cover ./...
-  - $HOME/gopath/bin/goveralls -service=travis-ci
+  - go test -covermode=count -coverprofile=profile.cov ./...
+  - goveralls -coverprofile=profile.cov -service=travis-pro
 
 notifications:
   email: false

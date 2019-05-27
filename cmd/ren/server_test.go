@@ -10,7 +10,7 @@ import (
 	"github.com/hamba/pkg/log"
 	"github.com/hamba/pkg/stats"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/urfave/cli.v1"
+	"gopkg.in/urfave/cli.v2"
 )
 
 func TestServer_Health(t *testing.T) {
@@ -27,7 +27,7 @@ func TestServer_Health(t *testing.T) {
 
 func newTestContext() (*cmd.Context, *flag.FlagSet) {
 	fs := new(flag.FlagSet)
-	c := cli.NewContext(cli.NewApp(), fs, nil)
+	c := cli.NewContext(&cli.App{}, fs, nil)
 
 	ctx, _ := cmd.NewContext(c)
 	ctx.AttachLogger(func(log.Logger) log.Logger { return log.Null })

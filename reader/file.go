@@ -7,10 +7,12 @@ import (
 	"strings"
 )
 
+// FileReader is a local file reader.
 type FileReader struct {
 	base string
 }
 
+// NewFileReader returns a file reader.
 func NewFileReader(path string) *FileReader {
 	if strings.HasPrefix(path, "/.") {
 		path = path[1:]
@@ -21,6 +23,7 @@ func NewFileReader(path string) *FileReader {
 	}
 }
 
+// Read reads the file at the given path.
 func (r *FileReader) Read(path string) (string, error) {
 	path = filepath.Join(r.base, path)
 	if _, err := os.Stat(path); os.IsNotExist(err) {

@@ -11,10 +11,10 @@ import (
 )
 
 func TestNewHttpReader(t *testing.T) {
-	r := reader.NewHttpReader("http://test")
+	r := reader.NewHTTPReader("http://test")
 
 	assert.Implements(t, (*ren.Reader)(nil), r)
-	assert.IsType(t, &reader.HttpReader{}, r)
+	assert.IsType(t, &reader.HTTPReader{}, r)
 }
 
 func TestHttpReader_Read(t *testing.T) {
@@ -22,7 +22,7 @@ func TestHttpReader_Read(t *testing.T) {
 	srv.On("GET", "/test.tmpl").ReturnsString(http.StatusOK, "{{ .str }}")
 	defer srv.Close()
 
-	r := reader.NewHttpReader(srv.URL())
+	r := reader.NewHTTPReader(srv.URL())
 
 	str, err := r.Read("test.tmpl")
 
@@ -31,7 +31,7 @@ func TestHttpReader_Read(t *testing.T) {
 }
 
 func TestHttpReader_ReadGetError(t *testing.T) {
-	r := reader.NewHttpReader("http://")
+	r := reader.NewHTTPReader("http://")
 
 	_, err := r.Read("test.tmpl")
 
@@ -43,7 +43,7 @@ func TestHttpReader_Read404(t *testing.T) {
 	srv.On("GET", "/test.tmpl").ReturnsStatus(http.StatusNotFound)
 	defer srv.Close()
 
-	r := reader.NewHttpReader(srv.URL())
+	r := reader.NewHTTPReader(srv.URL())
 
 	_, err := r.Read("test.tmpl")
 

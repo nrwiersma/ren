@@ -10,13 +10,13 @@ import (
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/server"
 	"github.com/nrwiersma/ren/server/middleware"
-	"gopkg.in/urfave/cli.v1"
+	"gopkg.in/urfave/cli.v2"
 )
 
-func runServer(c *cli.Context) {
+func runServer(c *cli.Context) error {
 	ctx, err := cmd.NewContext(c)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	app, err := newApplication(ctx)
@@ -30,6 +30,8 @@ func runServer(c *cli.Context) {
 	if err := http.ListenAndServe(":"+port, s); err != nil {
 		log.Fatal(ctx, "ren: server error", "error", err.Error())
 	}
+
+	return nil
 }
 
 func newServer(app *ren.Application) http.Handler {
