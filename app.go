@@ -10,7 +10,7 @@ import (
 	"github.com/hamba/pkg/stats"
 )
 
-// Application errors
+// Application errors.
 var (
 	ErrTemplateNotFound = errors.New("template not found")
 )
@@ -58,7 +58,7 @@ func (a *Application) Render(path string, data interface{}) ([]byte, error) {
 		return nil, err
 	}
 
-	return bytes.Replace(buf.Bytes(), []byte("<no value>"), []byte{}, -1), nil
+	return bytes.ReplaceAll(buf.Bytes(), []byte("<no value>"), []byte{}), nil
 }
 
 // IsHealthy checks the health of the Application.
