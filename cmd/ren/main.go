@@ -5,10 +5,9 @@ import (
 	"os"
 
 	"github.com/hamba/cmd"
-	"gopkg.in/urfave/cli.v2"
+	_ "github.com/joho/godotenv/autoload"
+	"github.com/urfave/cli/v2"
 )
-
-import _ "github.com/joho/godotenv/autoload"
 
 const (
 	flagTemplates = "templates"

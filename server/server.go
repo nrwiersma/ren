@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"net/http"
 	"path/filepath"
 
@@ -43,14 +44,13 @@ func ImageHandler(app Application) http.HandlerFunc {
 
 		img, err := app.Render(path, data)
 		if err != nil {
-			switch err {
-			case ren.ErrTemplateNotFound:
+			if errors.Is(err, ren.ErrTemplateNotFound) {
 				http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-
-			default:
-				log.Error(app, "could not render template", "error", err)
-				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+				return
 			}
+
+			log.Error(app, "could not render template", "error", err)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
 

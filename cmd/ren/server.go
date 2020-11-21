@@ -10,7 +10,7 @@ import (
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/server"
 	"github.com/nrwiersma/ren/server/middleware"
-	"gopkg.in/urfave/cli.v2"
+	"github.com/urfave/cli/v2"
 )
 
 func runServer(c *cli.Context) error {
