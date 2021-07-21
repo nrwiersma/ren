@@ -1,47 +1,84 @@
 package reader
 
 import (
-	"errors"
-	"io/ioutil"
+	"context"
+	"fmt"
+	"io"
 	"net/http"
 	"net/url"
-	path2 "path"
+	"strings"
+	"time"
+
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
 // HTTPReader is an http file reader.
 type HTTPReader struct {
-	base string
+	base   *url.URL
+	client *http.Client
+
+	tracer trace.Tracer
 }
 
 // NewHTTPReader returns an http file reader.
-func NewHTTPReader(path string) *HTTPReader {
-	return &HTTPReader{
-		base: path,
+func NewHTTPReader(uri string, tracer trace.Tracer) (*HTTPReader, error) {
+	base, err := url.Parse(uri)
+	if err != nil {
+		return nil, fmt.Errorf("invalid base url %q: %w", uri, err)
 	}
+
+	return &HTTPReader{
+		base: base,
+		client: &http.Client{
+			Timeout:   10 * time.Second,
+			Transport: otelhttp.NewTransport(http.DefaultTransport),
+		},
+		tracer: tracer,
+	}, nil
 }
 
 // Read reads the file at the given path.
-func (r *HTTPReader) Read(path string) (string, error) {
-	u, err := url.Parse(r.base)
-	if err != nil {
-		return "", nil
-	}
-	u.Path = path2.Join(u.Path, path)
+func (r *HTTPReader) Read(ctx context.Context, path string) (string, error) {
+	_, span := r.tracer.Start(ctx, "read", trace.WithSpanKind(trace.SpanKindClient))
+	defer span.End()
 
-	resp, err := http.Get(u.String())
+	u, err := r.base.Parse(strings.TrimLeft(path, "/"))
 	if err != nil {
+		span.RecordError(err)
 		return "", err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return "", errors.New("resolver: file not found: " + u.String())
-	}
-
-	b, err := ioutil.ReadAll(resp.Body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
 		return "", err
 	}
 
-	return string(b), nil
+	resp, err := r.client.Do(req)
+	if err != nil {
+		span.RecordError(err)
+		return "", err
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		span.RecordError(err)
+		return "", err
+	}
+
+	span.SetAttributes(attribute.Int("http.status_code", resp.StatusCode))
+
+	switch resp.StatusCode {
+	case http.StatusOK:
+		return string(b), nil
+	case http.StatusNotFound:
+		span.RecordError(ErrTemplateNotFound)
+		return "", ErrTemplateNotFound
+	default:
+		err = fmt.Errorf("unexpected status code %d", resp.StatusCode)
+		span.RecordError(err)
+		return "", err
+	}
 }

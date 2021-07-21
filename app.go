@@ -1,77 +1,69 @@
+// Package ren implements the business logic layer.
 package ren
 
 import (
-	"bytes"
+	"context"
 	"errors"
-	"strings"
-	"text/template"
 
-	"github.com/hamba/pkg/log"
-	"github.com/hamba/pkg/stats"
+	"github.com/hamba/logger/v2"
+	"github.com/hamba/statter/v2"
+	"github.com/nrwiersma/ren/reader"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
-// Application errors.
-var (
-	ErrTemplateNotFound = errors.New("template not found")
-)
+// ErrTemplateNotFound occurs when a template cannot be found.
+var ErrTemplateNotFound = errors.New("template not found")
 
 // Reader represents a template Reader.
 type Reader interface {
-	Read(path string) (string, error)
+	Read(ctx context.Context, path string) (string, error)
 }
 
 // Application represents the application.
 type Application struct {
-	logger  log.Logger
-	statter stats.Statter
+	tmplSvc *templateService
+	reader  Reader
 
-	Reader Reader
+	log    *logger.Logger
+	stats  *statter.Statter
+	tracer trace.Tracer
 }
 
 // NewApplication creates an instance of Application.
-func NewApplication(l log.Logger, s stats.Statter) *Application {
+func NewApplication(r Reader, log *logger.Logger, stats *statter.Statter, tracer trace.TracerProvider) *Application {
+	tmplSvc := &templateService{tracer: tracer.Tracer("template-service")}
+
 	return &Application{
-		logger:  l,
-		statter: s,
+		tmplSvc: tmplSvc,
+		reader:  r,
+		log:     log,
+		stats:   stats,
+		tracer:  tracer.Tracer("app"),
 	}
 }
 
 // Render renders a template with the given data.
-func (a *Application) Render(path string, data interface{}) ([]byte, error) {
-	svg, err := a.Reader.Read(path)
-	if err != nil {
-		return nil, ErrTemplateNotFound
-	}
+func (a *Application) Render(ctx context.Context, path string, data map[string]string) ([]byte, error) {
+	ctx, span := a.tracer.Start(ctx, "render", trace.WithAttributes(
+		attribute.String("path", path),
+	))
+	defer span.End()
 
-	tmpl, err := template.New("template").Funcs(template.FuncMap{
-		"trim":  strings.TrimSpace,
-		"upper": strings.ToUpper,
-		"lower": strings.ToLower,
-		"title": strings.Title,
-	}).Parse(svg)
+	svg, err := a.reader.Read(ctx, path)
 	if err != nil {
+		span.RecordError(err)
+
+		if errors.Is(err, reader.ErrTemplateNotFound) {
+			return nil, ErrTemplateNotFound
+		}
 		return nil, err
 	}
 
-	buf := bytes.NewBuffer([]byte{})
-	if err = tmpl.Execute(buf, data); err != nil {
-		return nil, err
-	}
-
-	return bytes.ReplaceAll(buf.Bytes(), []byte("<no value>"), []byte{}), nil
+	return a.tmplSvc.Render(ctx, svg, data)
 }
 
 // IsHealthy checks the health of the Application.
 func (a *Application) IsHealthy() error {
 	return nil
-}
-
-// Logger returns the Logger attached to the Application.
-func (a *Application) Logger() log.Logger {
-	return a.logger
-}
-
-// Statter returns the Statter attached to the Application.
-func (a *Application) Statter() stats.Statter {
-	return a.statter
 }
