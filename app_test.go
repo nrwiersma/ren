@@ -1,68 +1,95 @@
 package ren_test
 
 import (
-	"fmt"
+	"context"
+	"io"
 	"testing"
+	"time"
 
-	"github.com/hamba/pkg/log"
-	"github.com/hamba/pkg/stats"
+	"github.com/hamba/logger/v2"
+	"github.com/hamba/statter/v2"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/reader"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"go.opentelemetry.io/otel"
 )
 
 func TestApplication_Render(t *testing.T) {
 	tests := []struct {
-		path   string
-		data   interface{}
-		ok     bool
-		expect []byte
+		name    string
+		path    string
+		data    map[string]string
+		want    []byte
+		wantErr require.ErrorAssertionFunc
 	}{
-		{"test.tmpl", map[string]string{"str": "str"}, true, []byte("str")},
-		{"test.tmpl", map[string]string{}, true, []byte{}},
-		{"nonexistant", map[string]string{}, false, nil},
-		{"parse_err.tmpl", map[string]string{}, false, nil},
-		{"exec_err.tmpl", map[string]string{}, false, nil},
+		{
+			name:    "renders a template",
+			path:    "test.tmpl",
+			data:    map[string]string{"str": "str"},
+			want:    []byte("str"),
+			wantErr: require.NoError,
+		},
+		{
+			name:    "handles no data",
+			path:    "test.tmpl",
+			data:    map[string]string{},
+			want:    []byte{},
+			wantErr: require.NoError,
+		},
+		{
+			name:    "handles non-existant template",
+			path:    "nonexistant",
+			data:    map[string]string{},
+			wantErr: require.Error,
+		},
+		{
+			name:    "handles template error",
+			path:    "parse_err.tmpl",
+			data:    map[string]string{},
+			wantErr: require.Error,
+		},
+		{
+			name:    "handles template exec error",
+			path:    "exec_err.tmpl",
+			data:    map[string]string{},
+			wantErr: require.Error,
+		},
 	}
 
-	for i, tt := range tests {
-		a := ren.NewApplication(log.Null, stats.Null)
-		a.Reader = reader.NewFileReader("testdata")
-		got, err := a.Render(tt.path, tt.data)
-		if ok := (err == nil); ok != tt.ok {
-			if err != nil {
-				assert.FailNow(t, fmt.Sprintf("test %d; unexpected error: %statter", i, err))
-			}
-			assert.FailNow(t, fmt.Sprintf("test %d; unexpected success", i))
-		}
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			r := reader.NewFileReader("testdata", otel.Tracer("reader"))
+			app := newTestApplication(r)
 
-		assert.Equal(t, tt.expect, got)
+			got, err := app.Render(context.Background(), test.path, test.data)
+
+			test.wantErr(t, err)
+			assert.Equal(t, test.want, got)
+		})
 	}
 }
 
 func TestApplication_RenderNotFound(t *testing.T) {
-	a := ren.NewApplication(log.Null, stats.Null)
-	a.Reader = reader.NewFileReader("")
+	r := reader.NewFileReader("", otel.Tracer("reader"))
+	app := newTestApplication(r)
 
-	_, err := a.Render("", nil)
+	_, err := app.Render(context.Background(), "", nil)
 
 	assert.Equal(t, ren.ErrTemplateNotFound, err)
 }
 
 func TestApplication_IsHealthy(t *testing.T) {
-	a := ren.NewApplication(log.Null, stats.Null)
+	app := newTestApplication(nil)
 
-	assert.Nil(t, a.IsHealthy())
+	assert.Nil(t, app.IsHealthy())
 }
 
-func TestApplication_Logger(t *testing.T) {
-	a := ren.NewApplication(log.Null, stats.Null)
+func newTestApplication(r ren.Reader) *ren.Application {
+	log := logger.New(io.Discard, logger.LogfmtFormat(), logger.Error)
+	stats := statter.New(statter.DiscardReporter, time.Second)
+	tracer := otel.GetTracerProvider()
 
-	assert.Equal(t, log.Null, a.Logger())
-}
-
-func TestApplication_Statter(t *testing.T) {
-	a := ren.NewApplication(log.Null, stats.Null)
-
-	assert.Equal(t, stats.Null, a.Statter())
+	return ren.NewApplication(r, log, stats, tracer)
 }
