@@ -29,7 +29,6 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - "ren:{{ .Tag }}"
       - "ghcr.io/nrwiersma/ren:{{ .Tag }}"
 
 snapshot:
