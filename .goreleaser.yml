@@ -1,0 +1,36 @@
+project_name: ren
+dist: dist
+
+gomod:
+  proxy: true
+
+builds:
+  - main: ./cmd/ren
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{ .CommitDate }}
+    goos:
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+
+archives:
+  - format: binary
+
+changelog:
+  skip: true
+
+checksum:
+  name_template: '{{ .ProjectName }}_checksums.txt'
+
+dockers:
+  - dockerfile: Dockerfile
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - "ren:{{ .Tag }}"
+      - "ghcr.io/nrwiersma/ren:{{ .Tag }}"
+
+snapshot:
+  name_template: "{{ .Tag }}"
