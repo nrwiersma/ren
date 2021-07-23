@@ -80,8 +80,9 @@ github.com/hamba/logger/v2 v2.2.0 h1:wOumGmu9r//r4uQ0OPBdAE+eyTXkIMJKdrDpFxjQhGY
 github.com/hamba/logger/v2 v2.2.0/go.mod h1:YkvVk8aIwAltFF2MLQ5POPW8QAxyn3M5ljEj0Q349jw=
 github.com/hamba/pkg/v2 v2.0.2 h1:f6sQ09rnz9hzRtQLySPijyVl4qIvQRIW2H0p8HJxJSE=
 github.com/hamba/pkg/v2 v2.0.2/go.mod h1:Sg+lm11noyBS8+EjzrPGXTzfJ9ba1ZoG9wkL/7HnjxU=
-github.com/hamba/statter/v2 v2.0.3 h1:HoSBm/jVe67XfrQrbWISNXhE3R4N50tKzQ/Z1iyioxQ=
 github.com/hamba/statter/v2 v2.0.3/go.mod h1:dyMu2zX4kOtNJAqx5tJP/n0i7wgIk0a3WVJ/x7woL10=
+github.com/hamba/statter/v2 v2.0.4 h1:GrXu0yyyu2t5ifM+kVmmAChHfL1FER82wNM5pFN5pgo=
+github.com/hamba/statter/v2 v2.0.4/go.mod h1:dyMu2zX4kOtNJAqx5tJP/n0i7wgIk0a3WVJ/x7woL10=
 github.com/hamba/testutils v0.1.1 h1:Cb4WQ8rmPrK52R2/iFYU/7FS+XNcXpC+baoRtTEJ5V0=
 github.com/hamba/testutils v0.1.1/go.mod h1:HWPZ5kgg7Nx93Ywdqt06L6UExmcfIvQceH3fN+bYL5s=
 github.com/hamba/timex v1.0.1 h1:Qefttpp1WRjv2irFi1uMvfM+CmivG/7YSkMlG/WKHWQ=
