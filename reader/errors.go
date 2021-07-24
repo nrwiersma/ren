@@ -1,7 +1,7 @@
 package reader
 
-import "errors"
+import "github.com/hamba/pkg/v2/errors"
 
 // ErrTemplateNotFound is returned when the requested template does
 // not exist.
-var ErrTemplateNotFound = errors.New("template not found")
+const ErrTemplateNotFound = errors.Error("template not found")

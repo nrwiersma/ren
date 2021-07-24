@@ -6,6 +6,7 @@ import (
 	"errors"
 
 	"github.com/hamba/logger/v2"
+	errorx "github.com/hamba/pkg/v2/errors"
 	"github.com/hamba/statter/v2"
 	"github.com/nrwiersma/ren/reader"
 	"go.opentelemetry.io/otel/attribute"
@@ -13,7 +14,7 @@ import (
 )
 
 // ErrTemplateNotFound occurs when a template cannot be found.
-var ErrTemplateNotFound = errors.New("template not found")
+const ErrTemplateNotFound = errorx.Error("template not found")
 
 // Reader represents a template Reader.
 type Reader interface {
