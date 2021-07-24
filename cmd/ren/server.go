@@ -7,7 +7,7 @@ import (
 	"github.com/hamba/cmd/v2"
 	"github.com/hamba/cmd/v2/term"
 	logCtx "github.com/hamba/logger/v2/ctx"
-	httpx "github.com/hamba/pkg/v2/http"
+	"github.com/hamba/pkg/v2/http"
 	"github.com/nrwiersma/ren/api"
 	"github.com/urfave/cli/v2"
 	"go.opentelemetry.io/otel/semconv"
@@ -44,7 +44,9 @@ func runServer(_ term.Term) func(c *cli.Context) error {
 		apiHdlr := api.New(app, log, stats, tracer.Tracer("api"))
 
 		port := c.String(cmd.FlagPort)
-		srv := httpx.NewServer(ctx, ":"+port, apiHdlr)
+		srv := http.NewServer(ctx, ":"+port, apiHdlr)
+
+		log.Info("Starting server", logCtx.Str("port", port))
 		srv.Serve(func(err error) {
 			log.Error("Server error", logCtx.Error("error", err))
 		})
