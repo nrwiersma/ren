@@ -1,5 +1,7 @@
 FROM alpine:latest as builder
 
+RUN apk --no-cache --update add ca-certificates
+
 FROM scratch
 
 COPY --from=builder /etc/ssl/certs /etc/ssl/certs
