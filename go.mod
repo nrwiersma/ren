@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/go-zoo/bone v1.3.0
-	github.com/hamba/cmd/v2 v2.0.1
+	github.com/hamba/cmd/v2 v2.1.2
 	github.com/hamba/logger/v2 v2.3.0
 	github.com/hamba/pkg/v2 v2.1.0
 	github.com/hamba/statter/v2 v2.1.0
