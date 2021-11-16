@@ -81,8 +81,9 @@ github.com/hamba/logger/v2 v2.3.0 h1:W20zm1RtimPI6LCKUcbmKDsTats1j14E/lI6XHYurRQ
 github.com/hamba/logger/v2 v2.3.0/go.mod h1:z66imz0yn2+Kfv4bDfgBijxJH/sMUEVwNg/KwvOJbyQ=
 github.com/hamba/pkg/v2 v2.2.1 h1:8WbMKeMIuVbXUDEcZPOXWLGviMMsGjhGklTc2HmErus=
 github.com/hamba/pkg/v2 v2.2.1/go.mod h1:uxBKihaibkoToVj0dOwMRrjrsf0Xa+9BnkoODNAKtq4=
-github.com/hamba/statter/v2 v2.1.0 h1:5E7ddRoGAHKFoKk1nbLvVEkoRaCHVoyEeeH9VGCJzc0=
 github.com/hamba/statter/v2 v2.1.0/go.mod h1:7vJdomdhMybryIMQgofFJySR1o2fHSitDusAZ/DDIhs=
+github.com/hamba/statter/v2 v2.1.1 h1:dTivCmWEUFZA7Z36sXJGAIup9mKg3hYFC5NaykSmvCk=
+github.com/hamba/statter/v2 v2.1.1/go.mod h1:JKqf/MG5wwc3nnXeDmy2CSHR9BkaU+7nGa4FDrdGKow=
 github.com/hamba/testutils v0.1.1 h1:Cb4WQ8rmPrK52R2/iFYU/7FS+XNcXpC+baoRtTEJ5V0=
 github.com/hamba/testutils v0.1.1/go.mod h1:HWPZ5kgg7Nx93Ywdqt06L6UExmcfIvQceH3fN+bYL5s=
 github.com/hamba/timex v1.1.0 h1:FRp5HDFY+2Z2O5eKZ1XAr2zbuZTOIjl4i86y0BX8SyA=
@@ -172,8 +173,9 @@ github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5Cc
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/urfave/cli/v2 v2.3.0 h1:qph92Y649prgesehzOrQjdWyxFOp/QVM+6imKHad91M=
 github.com/urfave/cli/v2 v2.3.0/go.mod h1:LJmUH05zAU44vOAcrfzZQKsZbVcdbOG8rtL3/XcUArI=
-github.com/valyala/fastrand v1.0.0 h1:LUKT9aKer2dVQNUi3waewTbKV+7H17kvWFNKs2ObdkI=
 github.com/valyala/fastrand v1.0.0/go.mod h1:HWqCzkrkg6QXT8V2EXWvXCoow7vLwOFN002oeRzjapQ=
+github.com/valyala/fastrand v1.1.0 h1:f+5HkLW4rsgzdNoleUOB69hyT9IlD2ZQh9GyDMfb5G8=
+github.com/valyala/fastrand v1.1.0/go.mod h1:HWqCzkrkg6QXT8V2EXWvXCoow7vLwOFN002oeRzjapQ=
 go.opentelemetry.io/contrib v0.20.0 h1:ubFQUn0VCZ0gPwIoJfBJVpeBlyRMxu8Mm/huKWYd9p0=
 go.opentelemetry.io/contrib v0.20.0/go.mod h1:G/EtFaa6qaN7+LxqfIAT3GiZa7Wv5DTBUzl5H4LY0Kc=
 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.20.0 h1:Q3C9yzW6I9jqEc8sawxzxZmY48fs9u220KXq6d5s3XU=
