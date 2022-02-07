@@ -34,7 +34,7 @@ func (r *FileReader) Read(ctx context.Context, path string) (string, error) {
 	defer span.End()
 
 	path = filepath.Join(r.base, path)
-	if _, err := os.Stat(path); err != nil {
+	if _, err := os.Stat(filepath.Clean(path)); err != nil {
 		span.RecordError(err)
 
 		if os.IsNotExist(err) {
@@ -43,9 +43,8 @@ func (r *FileReader) Read(ctx context.Context, path string) (string, error) {
 
 		return "", err
 	}
-	path = filepath.Clean(path)
 
-	b, err := os.ReadFile(path)
+	b, err := os.ReadFile(filepath.Clean(path))
 	if err != nil {
 		span.RecordError(err)
 
