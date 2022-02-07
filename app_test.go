@@ -72,7 +72,7 @@ func TestApplication_Render(t *testing.T) {
 }
 
 func TestApplication_RenderNotFound(t *testing.T) {
-	r := reader.NewFileReader("", otel.Tracer("reader"))
+	r := reader.NewFileReader("something-that-doesnt-exist", otel.Tracer("reader"))
 	app := newTestApplication(r)
 
 	_, err := app.Render(context.Background(), "", nil)
