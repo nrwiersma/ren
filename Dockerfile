@@ -1,13 +1,8 @@
-FROM alpine:latest as builder
+FROM  gcr.io/distroless/static:nonroot
 
-RUN apk --no-cache --update add ca-certificates
-
-FROM scratch
-
-COPY --from=builder /etc/ssl/certs /etc/ssl/certs
 COPY ren /ren
 
-ENV PORT "80"
+ENV PORT "8080"
 
-EXPOSE 80
+EXPOSE 8080
 CMD ["./ren", "server"]
