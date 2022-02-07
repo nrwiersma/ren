@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"syscall"
 
 	"github.com/hamba/cmd/v2"
@@ -35,7 +37,19 @@ func commands(ui term.Term) []*cli.Command {
 }
 
 func main() {
+	os.Exit(realMain())
+}
+
+func realMain() (code int) {
 	ui := newTerm()
+
+	defer func() {
+		if v := recover(); v != nil {
+			ui.Error(fmt.Sprintf("Panic: %v\n%s", v, string(debug.Stack())))
+			code = 1
+			return
+		}
+	}()
 
 	app := &cli.App{
 		Name:     "ren",
@@ -48,5 +62,7 @@ func main() {
 
 	if err := app.RunContext(ctx, os.Args); err != nil {
 		ui.Error(err.Error())
+		return 1
 	}
+	return 0
 }
