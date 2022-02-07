@@ -10,7 +10,7 @@ import (
 	"github.com/hamba/pkg/v2/http"
 	"github.com/nrwiersma/ren/api"
 	"github.com/urfave/cli/v2"
-	"go.opentelemetry.io/otel/semconv"
+	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 )
 
 func runServer(_ term.Term) func(c *cli.Context) error {
