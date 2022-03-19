@@ -7,10 +7,9 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/go-zoo/bone"
+	"github.com/go-chi/chi/v5"
 	"github.com/hamba/logger/v2"
-	logCtx "github.com/hamba/logger/v2/ctx"
-	httpx "github.com/hamba/pkg/v2/http"
+	lctx "github.com/hamba/logger/v2/ctx"
 	mdlw "github.com/hamba/pkg/v2/http/middleware"
 	"github.com/hamba/statter/v2"
 	"github.com/nrwiersma/ren"
@@ -20,8 +19,6 @@ import (
 
 // Application represents the main application.
 type Application interface {
-	httpx.Health
-
 	// Render renders a template with the given data.
 	Render(ctx context.Context, path string, data map[string]string) ([]byte, error)
 }
@@ -52,13 +49,11 @@ func New(app Application, log *logger.Logger, stats *statter.Statter, tracer tra
 }
 
 func (a *API) routes() http.Handler {
-	h := bone.New()
-	h.NotFound(mdlw.WithStats("not-found", a.stats, http.NotFoundHandler()))
-	h.Get(httpx.DefaultHealthPath, mdlw.WithStats("health", a.stats, httpx.NewHealthHandler(a.app)))
+	mux := chi.NewRouter()
+	mux.With(reqStats("not-found", a.stats)).NotFound(http.NotFound)
+	mux.With(reqStats("image", a.stats)).Get("/{group}/{file}", a.handleRenderImage())
 
-	h.Get("/:group/:file", mdlw.WithStats("image", a.stats, a.handleImage()))
-
-	r := mdlw.WithRecovery(h, a.log)
+	r := mdlw.WithRecovery(mux, a.log)
 	return otelhttp.NewHandler(r, "server")
 }
 
@@ -67,14 +62,14 @@ func (a *API) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	a.h.ServeHTTP(rw, req)
 }
 
-// handleImage handles requests to render an image.
-func (a *API) handleImage() http.HandlerFunc {
+// handleRenderImage handles requests to render an image.
+func (a *API) handleRenderImage() http.HandlerFunc {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		ctx, span := a.tracer.Start(req.Context(), "image")
 		defer span.End()
 
-		group := bone.GetValue(req, "group")
-		file := bone.GetValue(req, "file")
+		group := chi.URLParam(req, "group")
+		file := chi.URLParam(req, "file")
 
 		data := map[string]string{}
 		for k := range req.URL.Query() {
@@ -85,17 +80,24 @@ func (a *API) handleImage() http.HandlerFunc {
 		if err != nil {
 			span.RecordError(err)
 
-			if errors.Is(err, ren.ErrTemplateNotFound) {
+			switch {
+			case errors.Is(err, ren.ErrTemplateNotFound):
+				a.log.Debug("Could not find template")
 				http.Error(rw, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-				return
+			default:
+				a.log.Error("Could not render template", lctx.Error("error", err))
+				http.Error(rw, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			}
-
-			a.log.Error("Could not render template", logCtx.Error("error", err))
-			http.Error(rw, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
 
 		rw.Header().Set("Content-Type", "image/svg+xml")
 		_, _ = rw.Write(img)
+	}
+}
+
+func reqStats(name string, stats *statter.Statter) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return mdlw.WithStats(name, stats, next)
 	}
 }

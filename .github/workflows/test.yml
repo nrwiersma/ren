@@ -10,14 +10,15 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      GOLANGCI_LINT_VERSION: v1.44.0
+      GO_VERSION: 1.18
+      GOLANGCI_LINT_VERSION: v1.45.0
 
     steps:
       - name: Install Go
         if: success()
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16
+          go-version: ${{ env.GO_VERSION }}
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -34,6 +35,7 @@ jobs:
         uses: golangci/golangci-lint-action@v2
         with:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
+          args: --go ${{ env.GO_VERSION }}
 
       - name: Run tests
         run: go test -covermode=count -coverprofile=coverage.out ./...

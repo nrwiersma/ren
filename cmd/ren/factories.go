@@ -15,8 +15,6 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-// UI ======================================
-
 func newTerm() term.Term {
 	return term.Prefixed{
 		ErrorPrefix: "Error: ",
@@ -31,8 +29,6 @@ func newTerm() term.Term {
 	}
 }
 
-// Application =============================
-
 func newApplication(
 	c *cli.Context,
 	log *logger.Logger,
@@ -46,8 +42,6 @@ func newApplication(
 
 	return ren.NewApplication(r, log, stats, tp), nil
 }
-
-// Reader ==================================
 
 func newReader(uri string, tracer trace.Tracer) (ren.Reader, error) {
 	if uri == "" {

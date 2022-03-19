@@ -8,8 +8,8 @@ import (
 	"runtime/debug"
 	"syscall"
 
+	"github.com/ettle/strcase"
 	"github.com/hamba/cmd/v2"
-	"github.com/hamba/cmd/v2/term"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/urfave/cli/v2"
 )
@@ -18,22 +18,20 @@ const flagTemplates = "templates"
 
 var version = "¯\\_(ツ)_/¯"
 
-func commands(ui term.Term) []*cli.Command {
-	return []*cli.Command{
-		{
-			Name:  "server",
-			Usage: "Run the ren HTTP server",
-			Flags: cmd.Flags{
-				&cli.StringFlag{
-					Name:    flagTemplates,
-					Value:   "file:///./templates",
-					Usage:   "The URI to the templates. Supported schemes: 'file', 'http', 'https'.",
-					EnvVars: []string{"TEMPLATES"},
-				},
-			}.Merge(cmd.MonitoringFlags, cmd.ServerFlags),
-			Action: runServer(ui),
-		},
-	}
+var commands = []*cli.Command{
+	{
+		Name:  "server",
+		Usage: "Run the ren HTTP server",
+		Flags: cmd.Flags{
+			&cli.StringFlag{
+				Name:    flagTemplates,
+				Value:   "file:///./templates",
+				Usage:   "The URI to the templates. Supported schemes: 'file', 'http', 'https'.",
+				EnvVars: []string{strcase.ToSNAKE(flagTemplates)},
+			},
+		}.Merge(cmd.MonitoringFlags, cmd.ServerFlags),
+		Action: runServer,
+	},
 }
 
 func main() {
@@ -51,11 +49,10 @@ func realMain() (code int) {
 		}
 	}()
 
-	app := &cli.App{
-		Name:     "ren",
-		Version:  version,
-		Commands: commands(ui),
-	}
+	app := cli.NewApp()
+	app.Name = "ren"
+	app.Version = version
+	app.Commands = commands
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
