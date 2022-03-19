@@ -4,3 +4,7 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - service.yaml
+
+images:
+  - name: ren
+    newName: ghcr.io/nrwiersma/ren
