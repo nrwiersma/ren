@@ -16,10 +16,15 @@ tidy:
 	@echo "==> Done"
 .PHONY: tidy
 
-# Build the commands
+# Build the binary
 build:
 	@find ./cmd/* -maxdepth 1 -type d -exec go build {} \;
 .PHONY: build
+
+# Build the binary
+build-linux:
+	@GOOS=linux GOARCH=amd64 find ./cmd/* -maxdepth 1 -type d -exec go build {} \;
+.PHONY: build-linux
 
 # Run all tests
 test:
@@ -32,6 +37,6 @@ lint:
 .PHONY: lint
 
 # Build the docker image
-docker:
-	docker build -t ren .
+docker: build-linux
+	@docker build -t ren .
 .PHONY: docker
