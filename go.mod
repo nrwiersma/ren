@@ -7,7 +7,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/hamba/cmd/v2 v2.3.0
 	github.com/hamba/logger/v2 v2.3.0
-	github.com/hamba/pkg/v2 v2.3.0
+	github.com/hamba/pkg/v2 v2.3.1
 	github.com/hamba/statter/v2 v2.2.0
 	github.com/hamba/testutils v0.1.1
 	github.com/joho/godotenv v1.4.0
@@ -26,7 +26,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
-	github.com/felixge/httpsnoop v1.0.2 // indirect
+	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect

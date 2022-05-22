@@ -14,7 +14,10 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const flagTemplates = "templates"
+const (
+	flagAddr      = "addr"
+	flagTemplates = "templates"
+)
 
 var version = "¯\\_(ツ)_/¯"
 
@@ -24,12 +27,18 @@ var commands = []*cli.Command{
 		Usage: "Run the ren HTTP server",
 		Flags: cmd.Flags{
 			&cli.StringFlag{
+				Name:    flagAddr,
+				Value:   ":8080",
+				Usage:   "The address to listen to.",
+				EnvVars: []string{strcase.ToSNAKE(flagAddr)},
+			},
+			&cli.StringFlag{
 				Name:    flagTemplates,
 				Value:   "file:///./templates",
 				Usage:   "The URI to the templates. Supported schemes: 'file', 'http', 'https'.",
 				EnvVars: []string{strcase.ToSNAKE(flagTemplates)},
 			},
-		}.Merge(cmd.MonitoringFlags, cmd.ServerFlags),
+		}.Merge(cmd.MonitoringFlags),
 		Action: runServer,
 	},
 }
