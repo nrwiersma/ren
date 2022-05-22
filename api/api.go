@@ -50,8 +50,8 @@ func New(app Application, log *logger.Logger, stats *statter.Statter, tracer tra
 
 func (a *API) routes() http.Handler {
 	mux := chi.NewRouter()
-	mux.With(reqStats("not-found", a.stats)).NotFound(http.NotFound)
-	mux.With(reqStats("image", a.stats)).Get("/{group}/{file}", a.handleRenderImage())
+	mux.With(mdlw.Stats("not-found", a.stats)).NotFound(http.NotFound)
+	mux.With(mdlw.Stats("image", a.stats)).Get("/{group}/{file}", a.handleRenderImage())
 
 	r := mdlw.WithRecovery(mux, a.log)
 	return otelhttp.NewHandler(r, "server")
@@ -93,11 +93,5 @@ func (a *API) handleRenderImage() http.HandlerFunc {
 
 		rw.Header().Set("Content-Type", "image/svg+xml")
 		_, _ = rw.Write(img)
-	}
-}
-
-func reqStats(name string, stats *statter.Statter) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return mdlw.WithStats(name, stats, next)
 	}
 }

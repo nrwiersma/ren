@@ -43,14 +43,14 @@ func runServer(c *cli.Context) error {
 	apiSrv := api.New(app, log, stats, tracer.Tracer("api"))
 
 	mux := http.NewServeMux()
-	mux.Handle("/readyz", http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {}))
+	mux.Handle("/readyz", httpx.OKHandler())
 	mux.Handle("/healthz", httpx.NewHealthHandler(app))
 	mux.Handle("/", apiSrv)
 
-	port := c.String(cmd.FlagPort)
-	srv := httpx.NewServer(ctx, ":"+port, mux)
+	addr := c.String(flagAddr)
+	srv := httpx.NewServer(ctx, addr, mux)
 
-	log.Info("Starting server", logCtx.Str("port", port))
+	log.Info("Starting server", logCtx.Str("address", addr))
 	srv.Serve(func(err error) {
 		log.Error("Server error", logCtx.Error("error", err))
 	})
