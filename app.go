@@ -62,7 +62,7 @@ func (a *Application) Render(ctx context.Context, path string, data map[string]s
 		return nil, err
 	}
 
-	a.stats.Counter("rendered", tags.Str("path", path)).Inc(1)
+	a.stats.Counter("rendered", tags.Str("template", path)).Inc(1)
 
 	return a.tmplSvc.Render(ctx, svg, data)
 }
