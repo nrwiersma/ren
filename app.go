@@ -12,10 +12,13 @@ import (
 	"github.com/nrwiersma/ren/reader"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
+	"golang.org/x/exp/slices"
 )
 
 // ErrTemplateNotFound occurs when a template cannot be found.
 const ErrTemplateNotFound = errorx.Error("template not found")
+
+var whitelistDataKeys = []string{"title", "name"}
 
 // Reader represents a template Reader.
 type Reader interface {
@@ -62,7 +65,9 @@ func (a *Application) Render(ctx context.Context, path string, data map[string]s
 		return nil, err
 	}
 
-	a.stats.Counter("rendered", tags.Str("template", path)).Inc(1)
+	t := []statter.Tag{tags.Str("template", path)}
+	t = collectTags(t, data)
+	a.stats.Counter("rendered", t...).Inc(1)
 
 	return a.tmplSvc.Render(ctx, svg, data)
 }
@@ -70,4 +75,14 @@ func (a *Application) Render(ctx context.Context, path string, data map[string]s
 // IsHealthy checks the health of the Application.
 func (a *Application) IsHealthy() error {
 	return nil
+}
+
+func collectTags(t []statter.Tag, data map[string]string) []statter.Tag {
+	for k, v := range data {
+		if !slices.Contains(whitelistDataKeys, k) {
+			continue
+		}
+		t = append(t, tags.Str(k, v))
+	}
+	return t
 }
