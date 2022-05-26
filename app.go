@@ -8,6 +8,7 @@ import (
 	"github.com/hamba/logger/v2"
 	errorx "github.com/hamba/pkg/v2/errors"
 	"github.com/hamba/statter/v2"
+	"github.com/hamba/statter/v2/tags"
 	"github.com/nrwiersma/ren/reader"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
@@ -60,6 +61,8 @@ func (a *Application) Render(ctx context.Context, path string, data map[string]s
 		}
 		return nil, err
 	}
+
+	a.stats.Counter("rendered", tags.Str("path", path)).Inc(1)
 
 	return a.tmplSvc.Render(ctx, svg, data)
 }
