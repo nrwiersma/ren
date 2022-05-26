@@ -62,6 +62,7 @@ func realMain() (code int) {
 	app.Name = "ren"
 	app.Version = version
 	app.Commands = commands
+	app.Suggest = true
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
