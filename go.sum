@@ -35,6 +35,7 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/Shopify/sarama v1.30.0/go.mod h1:zujlQQx1kzHsh4jfV1USnptCQrHAEZ2Hk8fTKCulPVs=
 github.com/Shopify/toxiproxy/v2 v2.1.6-0.20210914104332-15ea381dcdae/go.mod h1:/cvHQkZ1fst0EmZnA5dFtiQdWCNCFYzb+uE2vqVgvx0=
+github.com/VictoriaMetrics/metrics v1.18.1/go.mod h1:ArjwVz7WpgpegX/JpB0zpNF2h2232kErkEnzH1sxMmA=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
@@ -175,8 +176,9 @@ github.com/hamba/logger/v2 v2.3.0 h1:W20zm1RtimPI6LCKUcbmKDsTats1j14E/lI6XHYurRQ
 github.com/hamba/logger/v2 v2.3.0/go.mod h1:z66imz0yn2+Kfv4bDfgBijxJH/sMUEVwNg/KwvOJbyQ=
 github.com/hamba/pkg/v2 v2.3.1 h1:X6U9IJ7XUtNluPer912+Rvj/KGl3rSW0sAQeCZxASh8=
 github.com/hamba/pkg/v2 v2.3.1/go.mod h1:edrxmZLQ+xyU5ecib/rXMhKOBGq3qza40oww+bvihTI=
-github.com/hamba/statter/v2 v2.2.0 h1:y6gimqHQ1kKN4XaHZCMve+I2u4nu0z0rDZxLVyH2lEM=
 github.com/hamba/statter/v2 v2.2.0/go.mod h1:Y4sAul2FFL+MD/h/sXB4zDJHTQz4QUSFWtPv51vHAt8=
+github.com/hamba/statter/v2 v2.3.0 h1:1QrkjJvXvTmBqUoLmM31l7slo0n6DQV5SF3H6YV3Njg=
+github.com/hamba/statter/v2 v2.3.0/go.mod h1:1RYEW6BOKviiMxyRH35W24Jf/k5U/UAQX3Xxe2yRrOI=
 github.com/hamba/testutils v0.1.1 h1:Cb4WQ8rmPrK52R2/iFYU/7FS+XNcXpC+baoRtTEJ5V0=
 github.com/hamba/testutils v0.1.1/go.mod h1:HWPZ5kgg7Nx93Ywdqt06L6UExmcfIvQceH3fN+bYL5s=
 github.com/hamba/timex v1.1.0 h1:FRp5HDFY+2Z2O5eKZ1XAr2zbuZTOIjl4i86y0BX8SyA=
@@ -307,6 +309,7 @@ github.com/urfave/cli/v2 v2.10.2 h1:x3p8awjp/2arX+Nl/G2040AZpOCHS/eMJJ1/a+mye4Y=
 github.com/urfave/cli/v2 v2.10.2/go.mod h1:f8iq5LtQ/bLxafbdBSLPPNsgaW0l/2fYYEHhAyPlwvo=
 github.com/valyala/fastrand v1.1.0 h1:f+5HkLW4rsgzdNoleUOB69hyT9IlD2ZQh9GyDMfb5G8=
 github.com/valyala/fastrand v1.1.0/go.mod h1:HWqCzkrkg6QXT8V2EXWvXCoow7vLwOFN002oeRzjapQ=
+github.com/valyala/histogram v1.2.0/go.mod h1:Hb4kBwb4UxsaNbbbh+RRz8ZR6pdodR57tzWUS3BUzXY=
 github.com/xdg-go/pbkdf2 v1.0.0/go.mod h1:jrpuAogTd400dnrH08LKmI/xc1MbPOebTwRqcT5RDeI=
 github.com/xdg-go/scram v1.0.2/go.mod h1:1WAq6h33pAW+iRreB34OORO2Nf7qel3VV3fjBj+hCSs=
 github.com/xdg-go/stringprep v1.0.2/go.mod h1:8F9zXuvzgwmyT5DUm4GUfZGDdT3W+LCvS6+da4O5kxM=
