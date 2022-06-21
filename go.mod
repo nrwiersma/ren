@@ -11,7 +11,7 @@ require (
 	github.com/hamba/statter/v2 v2.2.0
 	github.com/hamba/testutils v0.1.1
 	github.com/joho/godotenv v1.4.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.4
 	github.com/urfave/cli/v2 v2.10.2
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.32.0
 	go.opentelemetry.io/otel v1.7.0
@@ -46,7 +46,7 @@ require (
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
-	github.com/stretchr/objx v0.1.1 // indirect
+	github.com/stretchr/objx v0.4.0 // indirect
 	github.com/valyala/fastrand v1.1.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.7.0 // indirect
