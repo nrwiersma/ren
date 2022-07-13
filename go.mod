@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/ettle/strcase v0.1.1
 	github.com/go-chi/chi/v5 v5.0.7
-	github.com/hamba/cmd/v2 v2.4.0
+	github.com/hamba/cmd/v2 v2.5.0
 	github.com/hamba/logger/v2 v2.4.0
 	github.com/hamba/pkg/v2 v2.3.1
 	github.com/hamba/statter/v2 v2.3.0
@@ -51,10 +51,10 @@ require (
 	github.com/valyala/fastrand v1.1.0 // indirect
 	github.com/valyala/histogram v1.2.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	go.opentelemetry.io/otel/exporters/jaeger v1.7.0 // indirect
-	go.opentelemetry.io/otel/exporters/zipkin v1.7.0 // indirect
+	go.opentelemetry.io/otel/exporters/jaeger v1.8.0 // indirect
+	go.opentelemetry.io/otel/exporters/zipkin v1.8.0 // indirect
 	go.opentelemetry.io/otel/metric v0.31.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.7.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.8.0 // indirect
 	golang.org/x/net v0.0.0-20220524220425-1d687d428aca // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
