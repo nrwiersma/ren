@@ -68,8 +68,8 @@ func (a *API) handleRenderImage() http.HandlerFunc {
 		ctx, span := a.tracer.Start(req.Context(), "image")
 		defer span.End()
 
-		group := chi.URLParam(req, "group")
-		file := chi.URLParam(req, "file")
+		group := chi.URLParamFromCtx(ctx, "group")
+		file := chi.URLParamFromCtx(ctx, "file")
 
 		data := map[string]string{}
 		for k := range req.URL.Query() {
