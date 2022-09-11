@@ -21,7 +21,8 @@ func (s *templateService) Render(ctx context.Context, svg string, data map[strin
 		"trim":  strings.TrimSpace,
 		"upper": strings.ToUpper,
 		"lower": strings.ToLower,
-		"title": strings.Title, // nolint:staticcheck
+		//nolint:staticcheck
+		"title": strings.Title,
 	}).Parse(svg)
 	if err != nil {
 		span.RecordError(err)

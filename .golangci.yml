@@ -16,6 +16,11 @@ linters:
     - scopelint # deprecated
     - maligned # deprecated
     - golint # deprecated
+    - structcheck # deprecated
+    - deadcode # deprecated
+    - varcheck # deprecated
+    - nosnakecase # deprecated
+    - ifshort # deprecated
     - exhaustive
     - exhaustivestruct
     - exhaustruct
@@ -33,3 +38,5 @@ linters:
 
 issues:
   exclude-use-default: false
+  exclude:
+    - 'package-comments: should have a package comment'
