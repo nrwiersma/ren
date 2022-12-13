@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/ettle/strcase v0.1.1
-	github.com/go-chi/chi/v5 v5.0.7
+	github.com/go-chi/chi/v5 v5.0.8
 	github.com/hamba/cmd/v2 v2.5.0
 	github.com/hamba/logger/v2 v2.4.0
 	github.com/hamba/pkg/v2 v2.3.1
