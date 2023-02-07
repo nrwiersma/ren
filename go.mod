@@ -10,7 +10,7 @@ require (
 	github.com/hamba/pkg/v2 v2.3.1
 	github.com/hamba/statter/v2 v2.3.1
 	github.com/hamba/testutils v0.2.1
-	github.com/joho/godotenv v1.4.0
+	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.1
 	github.com/urfave/cli/v2 v2.24.2
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.38.0
