@@ -8,7 +8,7 @@ require (
 	github.com/hamba/cmd/v2 v2.5.0
 	github.com/hamba/logger/v2 v2.4.0
 	github.com/hamba/pkg/v2 v2.3.1
-	github.com/hamba/statter/v2 v2.3.1
+	github.com/hamba/statter/v2 v2.3.2
 	github.com/hamba/testutils v0.2.1
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.1
@@ -20,7 +20,7 @@ require (
 )
 
 require (
-	github.com/VictoriaMetrics/metrics v1.22.2 // indirect
+	github.com/VictoriaMetrics/metrics v1.23.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cactus/go-statsd-client/v5 v5.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -41,8 +41,8 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/openzipkin/zipkin-go v0.4.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/prometheus/client_golang v1.13.0 // indirect
-	github.com/prometheus/client_model v0.2.0 // indirect
+	github.com/prometheus/client_golang v1.14.0 // indirect
+	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
