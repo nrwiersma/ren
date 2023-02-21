@@ -11,6 +11,7 @@ import (
 	"github.com/hamba/statter/v2/tags"
 	"github.com/nrwiersma/ren/reader"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 	"golang.org/x/exp/slices"
 )
@@ -57,6 +58,7 @@ func (a *Application) Render(ctx context.Context, path string, data map[string]s
 
 	svg, err := a.reader.Read(ctx, path)
 	if err != nil {
+		span.SetStatus(codes.Error, "Reading template")
 		span.RecordError(err)
 
 		if errors.Is(err, reader.ErrTemplateNotFound) {

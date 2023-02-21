@@ -11,6 +11,7 @@ import (
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -46,6 +47,7 @@ func (r *HTTPReader) Read(ctx context.Context, path string) (string, error) {
 
 	u, err := r.base.Parse(strings.TrimLeft(path, "/"))
 	if err != nil {
+		span.SetStatus(codes.Error, "Creating URL")
 		span.RecordError(err)
 		return "", err
 	}
@@ -57,6 +59,7 @@ func (r *HTTPReader) Read(ctx context.Context, path string) (string, error) {
 
 	resp, err := r.client.Do(req)
 	if err != nil {
+		span.SetStatus(codes.Error, "Requesting template")
 		span.RecordError(err)
 		return "", err
 	}
@@ -64,6 +67,7 @@ func (r *HTTPReader) Read(ctx context.Context, path string) (string, error) {
 
 	b, err := io.ReadAll(resp.Body)
 	if err != nil {
+		span.SetStatus(codes.Error, "Reading response")
 		span.RecordError(err)
 		return "", err
 	}
@@ -74,10 +78,12 @@ func (r *HTTPReader) Read(ctx context.Context, path string) (string, error) {
 	case http.StatusOK:
 		return string(b), nil
 	case http.StatusNotFound:
+		span.SetStatus(codes.Error, "Template not found")
 		span.RecordError(ErrTemplateNotFound)
 		return "", ErrTemplateNotFound
 	default:
 		err = fmt.Errorf("unexpected status code %d", resp.StatusCode)
+		span.SetStatus(codes.Error, "Request error")
 		span.RecordError(err)
 		return "", err
 	}

@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -35,6 +36,7 @@ func (r *FileReader) Read(ctx context.Context, path string) (string, error) {
 
 	path = filepath.Join(r.base, path)
 	if _, err := os.Stat(filepath.Clean(path)); err != nil {
+		span.SetStatus(codes.Error, "Finding file")
 		span.RecordError(err)
 
 		if os.IsNotExist(err) {
@@ -46,6 +48,7 @@ func (r *FileReader) Read(ctx context.Context, path string) (string, error) {
 
 	b, err := os.ReadFile(filepath.Clean(path))
 	if err != nil {
+		span.SetStatus(codes.Error, "Reading file")
 		span.RecordError(err)
 
 		return "", err

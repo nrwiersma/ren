@@ -14,6 +14,7 @@ import (
 	"github.com/hamba/statter/v2"
 	"github.com/nrwiersma/ren"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -78,6 +79,7 @@ func (a *API) handleRenderImage() http.HandlerFunc {
 
 		img, err := a.app.Render(ctx, filepath.Join(group, file+".svg"), data)
 		if err != nil {
+			span.SetStatus(codes.Error, "Rendering SVG")
 			span.RecordError(err)
 
 			switch {
