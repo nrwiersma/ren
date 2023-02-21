@@ -6,6 +6,7 @@ import (
 	"strings"
 	"text/template"
 
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -25,12 +26,14 @@ func (s *templateService) Render(ctx context.Context, svg string, data map[strin
 		"title": strings.Title,
 	}).Parse(svg)
 	if err != nil {
+		span.SetStatus(codes.Error, "Parsing template")
 		span.RecordError(err)
 		return nil, err
 	}
 
 	buf := bytes.NewBuffer([]byte{})
 	if err = tmpl.Execute(buf, data); err != nil {
+		span.SetStatus(codes.Error, "Rendering template")
 		span.RecordError(err)
 		return nil, err
 	}

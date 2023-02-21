@@ -1,13 +1,13 @@
 module github.com/nrwiersma/ren
 
-go 1.19
+go 1.20
 
 require (
 	github.com/ettle/strcase v0.1.1
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/hamba/cmd/v2 v2.7.1
 	github.com/hamba/logger/v2 v2.4.0
-	github.com/hamba/pkg/v2 v2.4.0
+	github.com/hamba/pkg/v2 v2.4.1
 	github.com/hamba/statter/v2 v2.3.2
 	github.com/hamba/testutils v0.2.1
 	github.com/joho/godotenv v1.5.1
@@ -16,7 +16,7 @@ require (
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.39.0
 	go.opentelemetry.io/otel v1.13.0
 	go.opentelemetry.io/otel/trace v1.13.0
-	golang.org/x/exp v0.0.0-20220909182711-5c715a9e8561
+	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb
 )
 
 require (
@@ -43,7 +43,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.14.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
-	github.com/prometheus/common v0.39.0 // indirect
+	github.com/prometheus/common v0.40.0 // indirect
 	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
@@ -51,10 +51,10 @@ require (
 	github.com/valyala/fastrand v1.1.0 // indirect
 	github.com/valyala/histogram v1.2.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	go.opentelemetry.io/otel/exporters/jaeger v1.12.0 // indirect
-	go.opentelemetry.io/otel/exporters/zipkin v1.12.0 // indirect
+	go.opentelemetry.io/otel/exporters/jaeger v1.13.0 // indirect
+	go.opentelemetry.io/otel/exporters/zipkin v1.13.0 // indirect
 	go.opentelemetry.io/otel/metric v0.36.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.12.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.13.0 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
