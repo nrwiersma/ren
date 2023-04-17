@@ -8,7 +8,7 @@ require (
 	github.com/hamba/cmd/v2 v2.7.1
 	github.com/hamba/logger/v2 v2.4.0
 	github.com/hamba/pkg/v2 v2.5.0
-	github.com/hamba/statter/v2 v2.3.2
+	github.com/hamba/statter/v2 v2.3.3
 	github.com/hamba/testutils v0.2.1
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.2
