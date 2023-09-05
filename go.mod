@@ -13,9 +13,9 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.25.7
-	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.41.0
-	go.opentelemetry.io/otel v1.15.0
-	go.opentelemetry.io/otel/trace v1.15.0
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.43.0
+	go.opentelemetry.io/otel v1.17.0
+	go.opentelemetry.io/otel/trace v1.17.0
 	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb
 )
 
@@ -53,7 +53,7 @@ require (
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.14.0 // indirect
 	go.opentelemetry.io/otel/exporters/zipkin v1.14.0 // indirect
-	go.opentelemetry.io/otel/metric v0.38.0 // indirect
+	go.opentelemetry.io/otel/metric v1.17.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.14.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
