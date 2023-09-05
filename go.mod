@@ -6,7 +6,7 @@ require (
 	github.com/ettle/strcase v0.1.1
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/hamba/cmd/v2 v2.7.2
-	github.com/hamba/logger/v2 v2.4.0
+	github.com/hamba/logger/v2 v2.5.0
 	github.com/hamba/pkg/v2 v2.5.0
 	github.com/hamba/statter/v2 v2.3.4
 	github.com/hamba/testutils v0.3.0
