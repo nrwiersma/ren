@@ -21,6 +21,7 @@ linters:
     - varcheck # deprecated
     - nosnakecase # deprecated
     - ifshort # deprecated
+    - depguard
     - exhaustive
     - exhaustivestruct
     - exhaustruct

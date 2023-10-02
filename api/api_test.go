@@ -3,19 +3,15 @@ package api_test
 import (
 	"context"
 	"errors"
-	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
-	"github.com/hamba/logger/v2"
-	"github.com/hamba/statter/v2"
+	"github.com/hamba/cmd/v2/observe"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/api"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"go.opentelemetry.io/otel"
 )
 
 func TestServer_HandleRenderImage(t *testing.T) {
@@ -62,14 +58,12 @@ func TestServer_HandleRenderImage(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			log := logger.New(io.Discard, logger.LogfmtFormat(), logger.Error)
-			stats := statter.New(statter.DiscardReporter, time.Second)
-			tracer := otel.Tracer("app")
+			obsvr := observe.NewFake()
 
 			app := &mockApp{}
 			app.On("Render", test.wantPath, test.wantData).Return([]byte{}, test.err)
 
-			srv := api.New(app, log, stats, tracer)
+			srv := api.New(app, obsvr)
 
 			r := httptest.NewRequest("GET", test.url, nil)
 			w := httptest.NewRecorder()

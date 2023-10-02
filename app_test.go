@@ -2,12 +2,9 @@ package ren_test
 
 import (
 	"context"
-	"io"
 	"testing"
-	"time"
 
-	"github.com/hamba/logger/v2"
-	"github.com/hamba/statter/v2"
+	"github.com/hamba/cmd/v2/observe"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/reader"
 	"github.com/stretchr/testify/assert"
@@ -87,9 +84,7 @@ func TestApplication_IsHealthy(t *testing.T) {
 }
 
 func newTestApplication(r ren.Reader) *ren.Application {
-	log := logger.New(io.Discard, logger.LogfmtFormat(), logger.Error)
-	stats := statter.New(statter.DiscardReporter, time.Second)
-	tracer := otel.GetTracerProvider()
+	obsvr := observe.NewFake()
 
-	return ren.NewApplication(r, log, stats, tracer)
+	return ren.NewApplication(r, obsvr)
 }
