@@ -5,42 +5,28 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/hamba/cmd/v2"
 	logCtx "github.com/hamba/logger/v2/ctx"
 	httpx "github.com/hamba/pkg/v2/http"
 	"github.com/nrwiersma/ren/api"
 	"github.com/urfave/cli/v2"
-	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 )
 
 func runServer(c *cli.Context) error {
-	ctx := c.Context
+	ctx, cancel := context.WithCancel(c.Context)
+	defer cancel()
 
-	log, err := cmd.NewLogger(c)
+	obsvr, err := newObserver(c)
+	if err != nil {
+		return err
+	}
+	defer obsvr.Close()
+
+	app, err := newApplication(c, obsvr)
 	if err != nil {
 		return err
 	}
 
-	stats, err := cmd.NewStatter(c, log)
-	if err != nil {
-		return err
-	}
-
-	tracer, err := cmd.NewTracer(c, log,
-		semconv.ServiceNameKey.String("ren"),
-		semconv.ServiceVersionKey.String(version),
-	)
-	if err != nil {
-		return err
-	}
-	defer func() { _ = tracer.Shutdown(context.Background()) }()
-
-	app, err := newApplication(c, log, stats, tracer)
-	if err != nil {
-		return err
-	}
-
-	apiSrv := api.New(app, log, stats, tracer.Tracer("api"))
+	apiSrv := api.New(app, obsvr)
 
 	mux := http.NewServeMux()
 	mux.Handle("/readyz", httpx.OKHandler())
@@ -50,17 +36,18 @@ func runServer(c *cli.Context) error {
 	addr := c.String(flagAddr)
 	srv := httpx.NewServer(ctx, addr, mux)
 
-	log.Info("Starting server", logCtx.Str("address", addr))
+	obsvr.Log.Info("Starting server", logCtx.Str("address", addr))
 	srv.Serve(func(err error) {
-		log.Error("Server error", logCtx.Error("error", err))
+		obsvr.Log.Error("Server error", logCtx.Error("error", err))
+		cancel()
 	})
 	defer func() { _ = srv.Close() }()
 
 	<-ctx.Done()
 
-	log.Info("Shutting down")
+	obsvr.Log.Info("Shutting down")
 	if err = srv.Shutdown(10 * time.Second); err != nil {
-		log.Error("Failed to shutdown server", logCtx.Error("error", err))
+		obsvr.Log.Error("Failed to shutdown server", logCtx.Error("error", err))
 	}
 
 	return nil

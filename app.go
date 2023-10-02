@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/hamba/cmd/v2/observe"
 	"github.com/hamba/logger/v2"
 	errorx "github.com/hamba/pkg/v2/errors"
 	"github.com/hamba/statter/v2"
@@ -37,15 +38,15 @@ type Application struct {
 }
 
 // NewApplication creates an instance of Application.
-func NewApplication(r Reader, log *logger.Logger, stats *statter.Statter, tracer trace.TracerProvider) *Application {
-	tmplSvc := &templateService{tracer: tracer.Tracer("template-service")}
+func NewApplication(r Reader, obsvr *observe.Observer) *Application {
+	tmplSvc := &templateService{tracer: obsvr.Tracer("template-service")}
 
 	return &Application{
 		tmplSvc: tmplSvc,
 		reader:  r,
-		log:     log,
-		stats:   stats,
-		tracer:  tracer.Tracer("app"),
+		log:     obsvr.Log,
+		stats:   obsvr.Stats,
+		tracer:  obsvr.Tracer("app"),
 	}
 }
 
