@@ -3,7 +3,7 @@ module github.com/nrwiersma/ren
 go 1.21
 
 require (
-	github.com/ettle/strcase v0.1.1
+	github.com/ettle/strcase v0.2.0
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/hamba/cmd/v2 v2.9.0
 	github.com/hamba/logger/v2 v2.5.0
