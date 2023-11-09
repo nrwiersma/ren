@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"net/http"
 	"time"
 
 	logCtx "github.com/hamba/logger/v2/ctx"
-	httpx "github.com/hamba/pkg/v2/http"
+	"github.com/hamba/pkg/v2/http"
+	"github.com/hamba/pkg/v2/http/healthz"
 	"github.com/nrwiersma/ren/api"
 	"github.com/urfave/cli/v2"
 )
@@ -28,13 +28,17 @@ func runServer(c *cli.Context) error {
 
 	apiSrv := api.New(app, obsvr)
 
-	mux := http.NewServeMux()
-	mux.Handle("/readyz", httpx.OKHandler())
-	mux.Handle("/healthz", httpx.NewHealthHandler(app))
-	mux.Handle("/", apiSrv)
-
 	addr := c.String(flagAddr)
-	srv := httpx.NewServer(ctx, addr, mux)
+	srv := http.NewHealthServer(ctx, http.HealthServerConfig{
+		Addr:    addr,
+		Handler: apiSrv,
+		Stats:   obsvr.Stats,
+		Log:     obsvr.Log,
+	})
+
+	if err = srv.AddHealthzChecks(healthz.PingHealth); err != nil {
+		return err
+	}
 
 	obsvr.Log.Info("Starting server", logCtx.Str("address", addr))
 	srv.Serve(func(err error) {
