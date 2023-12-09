@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"time"
+	"fmt"
 
-	logCtx "github.com/hamba/logger/v2/ctx"
-	"github.com/hamba/pkg/v2/http"
-	"github.com/hamba/pkg/v2/http/healthz"
+	lctx "github.com/hamba/logger/v2/ctx"
+	"github.com/hamba/pkg/v2/http/server"
 	"github.com/nrwiersma/ren/api"
 	"github.com/urfave/cli/v2"
 )
@@ -29,30 +28,17 @@ func runServer(c *cli.Context) error {
 	apiSrv := api.New(app, obsvr)
 
 	addr := c.String(flagAddr)
-	srv := http.NewHealthServer(ctx, http.HealthServerConfig{
+	srv := &server.GenericServer[context.Context]{
 		Addr:    addr,
 		Handler: apiSrv,
 		Stats:   obsvr.Stats,
 		Log:     obsvr.Log,
-	})
-
-	if err = srv.AddHealthzChecks(healthz.PingHealth); err != nil {
-		return err
 	}
 
-	obsvr.Log.Info("Starting server", logCtx.Str("address", addr))
-	srv.Serve(func(err error) {
-		obsvr.Log.Error("Server error", logCtx.Error("error", err))
-		cancel()
-	})
-	defer func() { _ = srv.Close() }()
+	obsvr.Log.Info("Starting server", lctx.Str("address", addr))
 
-	<-ctx.Done()
-
-	obsvr.Log.Info("Shutting down")
-	if err = srv.Shutdown(10 * time.Second); err != nil {
-		obsvr.Log.Error("Failed to shutdown server", logCtx.Error("error", err))
+	if err = srv.Run(ctx); err != nil {
+		return fmt.Errorf("server error: %w", err)
 	}
-
 	return nil
 }
