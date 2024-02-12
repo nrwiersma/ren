@@ -10,8 +10,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      GO_VERSION: "1.21"
-      GOLANGCI_LINT_VERSION: v1.54.2
+      GO_VERSION: "1.22"
+      GOLANGCI_LINT_VERSION: v1.56.1
 
     steps:
       - name: Install Go
@@ -32,7 +32,7 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Run linter
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v4
         with:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
           args: --go ${{ env.GO_VERSION }}
