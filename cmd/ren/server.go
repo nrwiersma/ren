@@ -4,17 +4,24 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/hamba/cmd/v2/observe"
 	lctx "github.com/hamba/logger/v2/ctx"
 	"github.com/hamba/pkg/v2/http/server"
 	"github.com/nrwiersma/ren/api"
 	"github.com/urfave/cli/v2"
+	"go.opentelemetry.io/otel/attribute"
+	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
 )
 
 func runServer(c *cli.Context) error {
 	ctx, cancel := context.WithCancel(c.Context)
 	defer cancel()
 
-	obsvr, err := newObserver(c)
+	obsvr, err := observe.NewFromCLI(c, "ren", &observe.Options{
+		TracingAttrs: []attribute.KeyValue{
+			semconv.ServiceVersionKey.String(version),
+		},
+	})
 	if err != nil {
 		return err
 	}
