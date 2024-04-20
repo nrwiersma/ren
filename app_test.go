@@ -55,8 +55,9 @@ func TestApplication_Render(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		test := test
 		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
 			r := reader.NewFileReader("testdata", otel.Tracer("reader"))
 			app := newTestApplication(r)
 
