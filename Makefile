@@ -33,7 +33,7 @@ test:
 
 # Lint the project
 lint:
-	@golangci-lint run --go 1.18 ./...
+	@golangci-lint run ./...
 .PHONY: lint
 
 # Build the docker image

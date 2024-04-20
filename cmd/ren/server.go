@@ -18,9 +18,8 @@ func runServer(c *cli.Context) error {
 	defer cancel()
 
 	obsvr, err := observe.NewFromCLI(c, "ren", &observe.Options{
-		TracingAttrs: []attribute.KeyValue{
-			semconv.ServiceVersionKey.String(version),
-		},
+		StatsRuntime: true,
+		TracingAttrs: []attribute.KeyValue{semconv.ServiceVersionKey.String(version)},
 	})
 	if err != nil {
 		return err
@@ -43,7 +42,6 @@ func runServer(c *cli.Context) error {
 	}
 
 	obsvr.Log.Info("Starting server", lctx.Str("address", addr))
-
 	if err = srv.Run(ctx); err != nil {
 		return fmt.Errorf("server error: %w", err)
 	}
