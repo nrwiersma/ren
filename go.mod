@@ -7,7 +7,7 @@ require (
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/hamba/cmd/v2 v2.13.0
 	github.com/hamba/logger/v2 v2.7.0
-	github.com/hamba/pkg/v2 v2.11.0
+	github.com/hamba/pkg/v2 v2.12.0
 	github.com/hamba/statter/v2 v2.4.0
 	github.com/hamba/testutils v0.4.0
 	github.com/joho/godotenv v1.5.1
