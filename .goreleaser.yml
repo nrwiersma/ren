@@ -33,4 +33,4 @@ dockers:
       - "ghcr.io/nrwiersma/ren:{{ .Tag }}"
 
 snapshot:
-  name_template: "{{ .Tag }}"
+  version_template: "{{ .Tag }}"
