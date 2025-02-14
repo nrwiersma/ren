@@ -4,6 +4,7 @@ package ren
 import (
 	"context"
 	"errors"
+	"slices"
 
 	"github.com/hamba/cmd/v2/observe"
 	"github.com/hamba/logger/v2"
@@ -14,7 +15,6 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
-	"golang.org/x/exp/slices"
 )
 
 // ErrTemplateNotFound occurs when a template cannot be found.
