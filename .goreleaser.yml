@@ -17,7 +17,7 @@ builds:
       - CGO_ENABLED=0
 
 archives:
-  - format: binary
+  - formats: ["binary"]
 
 changelog:
   disable: true
