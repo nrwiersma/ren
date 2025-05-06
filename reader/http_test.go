@@ -1,7 +1,6 @@
 package reader_test
 
 import (
-	"context"
 	"net/http"
 	"testing"
 
@@ -29,9 +28,9 @@ func TestHttpReader_Read(t *testing.T) {
 	r, err := reader.NewHTTPReader(srv.URL()+"/basepath/", otel.Tracer("http-render"))
 	require.NoError(t, err)
 
-	str, err := r.Read(context.Background(), "some/test.tmpl")
+	str, err := r.Read(t.Context(), "some/test.tmpl")
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "{{ .str }}", str)
 }
 
@@ -39,7 +38,7 @@ func TestHttpReader_ReadGetError(t *testing.T) {
 	r, err := reader.NewHTTPReader("http://", otel.Tracer("http-render"))
 	require.NoError(t, err)
 
-	_, err = r.Read(context.Background(), "test.tmpl")
+	_, err = r.Read(t.Context(), "test.tmpl")
 
 	assert.Error(t, err)
 }
@@ -52,7 +51,7 @@ func TestHttpReader_Read404(t *testing.T) {
 	r, err := reader.NewHTTPReader(srv.URL(), otel.Tracer("http-render"))
 	require.NoError(t, err)
 
-	_, err = r.Read(context.Background(), "test.tmpl")
+	_, err = r.Read(t.Context(), "test.tmpl")
 
 	assert.Error(t, err)
 }

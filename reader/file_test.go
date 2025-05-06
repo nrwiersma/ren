@@ -1,12 +1,12 @@
 package reader_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/reader"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel"
 )
 
@@ -20,16 +20,16 @@ func TestNewFileReader(t *testing.T) {
 func TestFileReader_Read(t *testing.T) {
 	r := reader.NewFileReader("/../testdata", otel.Tracer("file-render"))
 
-	str, err := r.Read(context.Background(), "test.tmpl")
+	str, err := r.Read(t.Context(), "test.tmpl")
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "{{ .str }}", str)
 }
 
 func TestFileReader_ReadFileNotFound(t *testing.T) {
 	r := reader.NewFileReader("/../testdata", otel.Tracer("file-render"))
 
-	_, err := r.Read(context.Background(), "wrong")
+	_, err := r.Read(t.Context(), "wrong")
 
 	assert.Error(t, err)
 }
@@ -37,7 +37,7 @@ func TestFileReader_ReadFileNotFound(t *testing.T) {
 func TestFileReader_ReadDirectory(t *testing.T) {
 	r := reader.NewFileReader("/../testdata", otel.Tracer("file-render"))
 
-	_, err := r.Read(context.Background(), "")
+	_, err := r.Read(t.Context(), "")
 
 	assert.Error(t, err)
 }

@@ -1,7 +1,6 @@
 package ren_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/hamba/cmd/v2/observe"
@@ -13,6 +12,8 @@ import (
 )
 
 func TestApplication_Render(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name    string
 		path    string
@@ -35,8 +36,8 @@ func TestApplication_Render(t *testing.T) {
 			wantErr: require.NoError,
 		},
 		{
-			name:    "handles non-existant template",
-			path:    "nonexistant",
+			name:    "handles non-existent template",
+			path:    "nonexistent",
 			data:    map[string]string{},
 			wantErr: require.Error,
 		},
@@ -61,7 +62,7 @@ func TestApplication_Render(t *testing.T) {
 			r := reader.NewFileReader("testdata", otel.Tracer("reader"))
 			app := newTestApplication(r)
 
-			got, err := app.Render(context.Background(), test.path, test.data)
+			got, err := app.Render(t.Context(), test.path, test.data)
 
 			test.wantErr(t, err)
 			assert.Equal(t, test.want, got)
@@ -73,7 +74,7 @@ func TestApplication_RenderNotFound(t *testing.T) {
 	r := reader.NewFileReader("something-that-doesnt-exist", otel.Tracer("reader"))
 	app := newTestApplication(r)
 
-	_, err := app.Render(context.Background(), "", nil)
+	_, err := app.Render(t.Context(), "", nil)
 
 	assert.Equal(t, ren.ErrTemplateNotFound, err)
 }
@@ -81,7 +82,7 @@ func TestApplication_RenderNotFound(t *testing.T) {
 func TestApplication_IsHealthy(t *testing.T) {
 	app := newTestApplication(nil)
 
-	assert.Nil(t, app.IsHealthy())
+	assert.NoError(t, app.IsHealthy())
 }
 
 func newTestApplication(r ren.Reader) *ren.Application {
