@@ -9,9 +9,9 @@ import (
 	"syscall"
 
 	"github.com/ettle/strcase"
-	"github.com/hamba/cmd/v2"
+	"github.com/hamba/cmd/v3"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 const (
@@ -30,13 +30,13 @@ var commands = []*cli.Command{
 				Name:    flagAddr,
 				Value:   ":8080",
 				Usage:   "The address to listen to.",
-				EnvVars: []string{strcase.ToSNAKE(flagAddr)},
+				Sources: cli.EnvVars(strcase.ToSNAKE(flagAddr)),
 			},
 			&cli.StringFlag{
 				Name:    flagTemplates,
 				Value:   "file:///./templates",
 				Usage:   "The URI to the templates. Supported schemes: 'file', 'http', 'https'.",
-				EnvVars: []string{strcase.ToSNAKE(flagTemplates)},
+				Sources: cli.EnvVars(strcase.ToSNAKE(flagTemplates)),
 			},
 		}.Merge(cmd.MonitoringFlags),
 		Action: runServer,
@@ -58,16 +58,17 @@ func realMain() (code int) {
 		}
 	}()
 
-	app := cli.NewApp()
-	app.Name = "ren"
-	app.Version = version
-	app.Commands = commands
-	app.Suggest = true
+	app := cli.Command{
+		Name:     "ren",
+		Version:  version,
+		Commands: commands,
+		Suggest:  true,
+	}
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
-	if err := app.RunContext(ctx, os.Args); err != nil {
+	if err := app.Run(ctx, os.Args); err != nil {
 		ui.Error(err.Error())
 		return 1
 	}

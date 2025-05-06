@@ -3,7 +3,7 @@ package ren_test
 import (
 	"testing"
 
-	"github.com/hamba/cmd/v2/observe"
+	"github.com/hamba/cmd/v3/observe"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/reader"
 	"github.com/stretchr/testify/assert"

@@ -6,7 +6,7 @@ import (
 	"errors"
 	"slices"
 
-	"github.com/hamba/cmd/v2/observe"
+	"github.com/hamba/cmd/v3/observe"
 	"github.com/hamba/logger/v2"
 	errorx "github.com/hamba/pkg/v2/errors"
 	"github.com/hamba/statter/v2"

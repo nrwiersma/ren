@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/hamba/cmd/v2/observe"
+	"github.com/hamba/cmd/v3/observe"
 	"github.com/hamba/logger/v2"
 	lctx "github.com/hamba/logger/v2/ctx"
 	mdlw "github.com/hamba/pkg/v2/http/middleware"
