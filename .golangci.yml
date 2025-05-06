@@ -1,34 +1,42 @@
-run:
-  tests: false
-  timeout: 5m
+version: "2"
 
-linters-settings:
-  cyclop:
-    max-complexity: 12
-    skip-tests: true
-  gofumpt:
-    extra-rules: true
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  settings:
+    gofumpt:
+      extra-rules: true
+  exclusions:
+    generated: lax
 
 linters:
-  enable-all: true
+  default: all
   disable:
-    - tenv # deprecated
     - depguard
     - err113
     - exhaustive
     - exhaustruct
     - forcetypeassert
+    - funlen
+    - funcorder
     - gochecknoglobals
     - gochecknoinits
     - ireturn
+    - mnd
     - nlreturn
     - nonamedreturns
-    - mnd
+    - paralleltest
     - varnamelen
     - wrapcheck
     - wsl
-
-issues:
-  exclude-use-default: false
-  exclude:
-    - 'package-comments: should have a package comment'
+  settings:
+    cyclop:
+      max-complexity: 15
+  exclusions:
+    generated: lax
+    rules:
+      - path: (.+)\.go$
+        text: 'package-comments: should have a package comment'

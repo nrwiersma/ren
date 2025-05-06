@@ -15,6 +15,8 @@ import (
 )
 
 func TestServer_HandleRenderImage(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name           string
 		url            string
@@ -66,7 +68,7 @@ func TestServer_HandleRenderImage(t *testing.T) {
 
 			srv := api.New(app, obsvr)
 
-			r := httptest.NewRequest("GET", test.url, nil)
+			r := httptest.NewRequestWithContext(t.Context(), http.MethodGet, test.url, nil)
 			w := httptest.NewRecorder()
 			srv.ServeHTTP(w, r)
 
