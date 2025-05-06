@@ -6,11 +6,11 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/hamba/cmd/v2/observe"
-	"github.com/hamba/cmd/v2/term"
+	"github.com/hamba/cmd/v3/observe"
+	"github.com/hamba/cmd/v3/term"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/reader"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -28,8 +28,8 @@ func newTerm() term.Term {
 	}
 }
 
-func newApplication(c *cli.Context, obsvr *observe.Observer) (*ren.Application, error) {
-	r, err := newReader(c.String(flagTemplates), obsvr.Tracer("reader"))
+func newApplication(cmd *cli.Command, obsvr *observe.Observer) (*ren.Application, error) {
+	r, err := newReader(cmd.String(flagTemplates), obsvr.Tracer("reader"))
 	if err != nil {
 		return nil, err
 	}

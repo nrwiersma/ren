@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/hamba/cmd/v2/observe"
+	"github.com/hamba/cmd/v3/observe"
 	"github.com/nrwiersma/ren"
 	"github.com/nrwiersma/ren/api"
 	"github.com/stretchr/testify/assert"

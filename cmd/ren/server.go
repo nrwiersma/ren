@@ -4,20 +4,20 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hamba/cmd/v2/observe"
+	"github.com/hamba/cmd/v3/observe"
 	lctx "github.com/hamba/logger/v2/ctx"
 	"github.com/hamba/pkg/v2/http/server"
 	"github.com/nrwiersma/ren/api"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 	"go.opentelemetry.io/otel/attribute"
 	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
 )
 
-func runServer(c *cli.Context) error {
-	ctx, cancel := context.WithCancel(c.Context)
+func runServer(ctx context.Context, cmd *cli.Command) error {
+	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	obsvr, err := observe.NewFromCLI(c, "ren", &observe.Options{
+	obsvr, err := observe.New(ctx, cmd, "ren", &observe.Options{
 		StatsRuntime: true,
 		TracingAttrs: []attribute.KeyValue{semconv.ServiceVersionKey.String(version)},
 	})
@@ -26,14 +26,14 @@ func runServer(c *cli.Context) error {
 	}
 	defer obsvr.Close()
 
-	app, err := newApplication(c, obsvr)
+	app, err := newApplication(cmd, obsvr)
 	if err != nil {
 		return err
 	}
 
 	apiSrv := api.New(app, obsvr)
 
-	addr := c.String(flagAddr)
+	addr := cmd.String(flagAddr)
 	srv := &server.GenericServer[context.Context]{
 		Addr:    addr,
 		Handler: apiSrv,
