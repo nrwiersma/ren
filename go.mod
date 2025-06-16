@@ -8,18 +8,18 @@ require (
 	github.com/hamba/cmd/v3 v3.0.0
 	github.com/hamba/logger/v2 v2.8.0
 	github.com/hamba/pkg/v2 v2.13.2
-	github.com/hamba/statter/v2 v2.6.1
+	github.com/hamba/statter/v2 v2.7.0
 	github.com/hamba/testutils v0.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.10.0
-	github.com/urfave/cli/v3 v3.3.3
+	github.com/urfave/cli/v3 v3.3.8
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.61.0
 	go.opentelemetry.io/otel v1.36.0
 	go.opentelemetry.io/otel/trace v1.36.0
 )
 
 require (
-	github.com/VictoriaMetrics/metrics v1.35.2 // indirect
+	github.com/VictoriaMetrics/metrics v1.37.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cactus/go-statsd-client/v5 v5.1.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
