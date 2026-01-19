@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/ettle/strcase v0.2.0
-	github.com/go-chi/chi/v5 v5.2.3
+	github.com/go-chi/chi/v5 v5.2.4
 	github.com/hamba/cmd/v3 v3.1.0
 	github.com/hamba/logger/v2 v2.9.0
 	github.com/hamba/pkg/v2 v2.14.0
@@ -12,7 +12,7 @@ require (
 	github.com/hamba/testutils v0.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.11.1
-	github.com/urfave/cli/v3 v3.6.1
+	github.com/urfave/cli/v3 v3.6.2
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.64.0
 	go.opentelemetry.io/otel v1.39.0
 	go.opentelemetry.io/otel/trace v1.39.0
