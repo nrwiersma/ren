@@ -22,7 +22,7 @@ func TestServer_HandleRenderImage(t *testing.T) {
 		url            string
 		err            error
 		wantPath       string
-		wantData       interface{}
+		wantData       any
 		wantStatusCode int
 	}{
 		{
