@@ -9,11 +9,11 @@ require (
 	github.com/hamba/logger/v2 v2.9.1
 	github.com/hamba/pkg/v2 v2.14.1
 	github.com/hamba/statter/v2 v2.8.1
-	github.com/hamba/testutils v0.7.0
+	github.com/hamba/testutils v0.7.1
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.11.1
-	github.com/urfave/cli/v3 v3.7.0
-	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.67.0
+	github.com/urfave/cli/v3 v3.8.0
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.68.0
 	go.opentelemetry.io/otel v1.43.0
 	go.opentelemetry.io/otel/trace v1.43.0
 )
