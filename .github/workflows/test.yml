@@ -1,40 +1,58 @@
+name: run tests
+
+permissions:
+  contents: read
+
 on:
   push:
     branches:
       - main
   pull_request:
 
-name: run tests
 jobs:
-  test:
+  lint:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
-      GOLANGCI_LINT_VERSION: v2.11.3
+      GOLANGCI_LINT_VERSION: v2.11.4
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Install Go
-        id: install-go
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: 'go.mod'
-
-      - name: Download dependencies
-        run: go mod download
-        if: steps.install-go.outputs.cache-hit != 'true'
+      - name: Setup
+        id: setup
+        uses: ./.github/actions/setup
 
       - name: Run linter
         uses: golangci/golangci-lint-action@v9
         with:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
 
-      - name: Setup gotestsum
-        uses: gertd/action-gotestsum@v3.0.0
+  test:
+
+    runs-on: ubuntu-24.04
+    env:
+      GOTESTSUM_VERSION: v1.13.0
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup
+        id: setup
+        uses: ./.github/actions/setup
+
+      - name: Cache Go test cache
+        uses: actions/cache@v5
         with:
-          gotestsum_version: v1.13.0
+          path: ${{ steps.setup.outputs.gocache }}
+          key: ${{ runner.os }}-gotest-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-gotest-
+
+      - name: Setup gotestsum
+        run: go install gotest.tools/gotestsum@${{ env.GOTESTSUM_VERSION }}
 
       - name: Run Tests
         run: gotestsum --junitfile tests.xml --format pkgname -- -covermode=atomic -coverprofile=coverage.out -race ./...
@@ -52,7 +70,30 @@ jobs:
           format: golang
           path-to-lcov: coverage.out
 
+
+  build:
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup
+        id: setup
+        uses: ./.github/actions/setup
+
+      - name: Cache Go build cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.setup.outputs.gocache }}
+          key: ${{ runner.os }}-gobuild-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-gobuild-
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v7
         with:
           args: release --clean --snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
