@@ -1,6 +1,6 @@
 module github.com/nrwiersma/ren
 
-go 1.26.4
+go 1.26.5
 
 require (
 	github.com/ettle/strcase v0.2.0
