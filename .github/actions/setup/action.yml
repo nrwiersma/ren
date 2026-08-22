@@ -13,7 +13,7 @@ runs:
   using: composite
   steps:
     - name: Install Go
-      uses: actions/setup-go@v6
+      uses: actions/setup-go@v7
       with:
         go-version-file: 'go.mod'
         cache: false
@@ -27,7 +27,7 @@ runs:
 
     - name: Cache Go modules
       id: mod-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ${{ steps.go-env.outputs.gomodcache }}
         key: ${{ runner.os }}-gomod-${{ hashFiles('**/go.sum') }}
